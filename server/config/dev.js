@@ -8,5 +8,6 @@ module.exports = {
   accessKeyId: 'AKIAIWVDA5LALMWBST6Q',
   secretAccessKey: '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',
   stripePublishableKey: 'pk_test_RLRgdEMxS0uUH7t2sNEckBMg',
-  stripeSecretKey: 'sk_test_LQcRjG6oBWlwLs9iz0rTw7mG'
+  stripeSecretKey: 'sk_test_LQcRjG6oBWlwLs9iz0rTw7mG',
+  jwtSecret: 'jwtSecret'
 };

@@ -4,11 +4,19 @@ const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const key = require('./config/keys');
-require('./models/Users');
+require('./models/User');
 require('./models/Movie');
 require('./services/passport');
 
-mongoose.connect(key.mongoURI);
+const options = {
+  autoIndex: false, // Don't build indexes
+  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  reconnectInterval: 500, // Reconnect every 500ms
+  poolSize: 100, // Maintain up to 10 socket connections
+  // If not connected, return errors immediately rather than waiting for reconnect
+  bufferMaxEntries: 0
+};
+mongoose.connect(key.mongoURI, options);
 
 const app = express();
 app.use(bodyParser.json());
@@ -40,4 +48,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 const PORT = process.env.PORT || 5011;
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Listening on port`, PORT);
+});

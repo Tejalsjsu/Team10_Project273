@@ -6,5 +6,6 @@ module.exports = {
   accessKeyId: process.env.ACCESS_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+  jwtSecret: process.env.JWT_SECRET
 };
