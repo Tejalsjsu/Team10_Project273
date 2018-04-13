@@ -20,8 +20,10 @@ module.exports = app => {
       res.status(401).send({ error: 'Payment did not go through' });
     }
   });
-
-  app.get('/api/getReceits/:id'), async (req, res) => {
+  /*
+  Following API return the receipts of the user who is currently logged in
+  */
+  app.get('/api/getReceits/'), async (req, res) => {
     const redis = require('redis');
     const redisUrl = 'redis://127.0.0.1:6379';
     const client = redis.createClient(redisUrl);
@@ -29,7 +31,15 @@ module.exports = app => {
     client.get = util.promisify(client.get);
     //Before saving it in the cache, check if anything in the cache
     //that is related to the query
-    const cachedCustomerReceipt = client.get(req.user.id);
+    const cachedCustomerReceipt = await client.get(req.user.id);
+
     //if no, update cache to store our data
+    if (cachedCustomerReceipt) {
+      console.log('serving from cache');
+      return res.send(JSON.parse(cachedCustomerReceipt));
+    }
+    console.log('serving from backend');
+    const receipts = await Receipt.find({ _user: req.user.id });
+    client.set(req.user.id, receipts);
   };
 };
