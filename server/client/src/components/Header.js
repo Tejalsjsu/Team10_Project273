@@ -33,7 +33,7 @@ class Header extends Component {
       color: 'lightblue'
     };
     return (
-      <nav className="navbar navbar-inverse">
+      <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div>
             <div className="navbar-header navbar-inverse">
