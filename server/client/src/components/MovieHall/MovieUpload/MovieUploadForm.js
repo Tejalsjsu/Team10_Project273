@@ -26,8 +26,10 @@ class MovieUploadForm extends Component {
     var values = {
       title: this.state.value
     };
+	var user={};
+	user.id=20;
     var file = this.state.file;
-    this.props.submitNewMovie(values, file);
+    this.props.submitNewMovie(user,values, file);
   }
 
   onFileChange(event) {

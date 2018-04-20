@@ -6,6 +6,7 @@ import Header from './Header';
 import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
+import MovieDetails from './MovieDetails';
 
 class App extends Component {
   componentDidMount() {
@@ -15,11 +16,15 @@ class App extends Component {
     return (
       <div>
         <BrowserRouter>
-          <div className="container">
+          <div>
             <Header />
+          <div className="container">
+
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
+            <Route exact path="/movie-details/:movie_id" component={MovieDetails} />
             <Secure />
+          </div>
           </div>
         </BrowserRouter>
       </div>

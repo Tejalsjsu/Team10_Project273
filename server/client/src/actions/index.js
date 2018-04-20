@@ -6,7 +6,7 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const submitNewMovie = (values, file) => async dispatch => {
+export const submitNewMovie = (user,values, file) => async dispatch => {
   const uploadConfig = await axios.get('/api/upload');
 
   await axios.put(uploadConfig.data.url, file, {
