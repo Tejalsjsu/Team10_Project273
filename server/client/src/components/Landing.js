@@ -4,9 +4,11 @@ class Landing extends React.Component {
   renderAdvertisement() {
     const styles = {
       height: '170px'
-    };
+    }
 
     return (
+
+
       <div className="container">
         <h1 className="my-4 text-center text-lg-left">Offers</h1>
 
@@ -84,6 +86,8 @@ class Landing extends React.Component {
       height: '500px'
     };
     return (
+        <div className="row">
+
       <div className="container-fluid">
         <div id="myCarousel" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
@@ -144,6 +148,7 @@ class Landing extends React.Component {
         {this.renderMoviesComingSoon()}
         {this.renderAdvertisement()}
         <br />
+      </div>
       </div>
     );
   }
