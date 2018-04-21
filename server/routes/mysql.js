@@ -13,23 +13,33 @@ var mysql = require('mysql');
     });
     return connection;
 }*/
-
 function getConnection(){
     var connectionPool = mysql.createPool({
         connectionLimit : 500,
         host     : 'localhost',
-        user     : 'krutika',
-        password : 'krutika@123',
-        database : 'project-273',
+        user     : 'root',
+        password : 'admin',
+        database : 'fandango',
         port	 : 3306
     });
     return connectionPool;
 }
 
+// function getConnection(){
+//     var connectionPool = mysql.createPool({
+//         connectionLimit : 500,
+//         host     : 'localhost',
+//         user     : 'krutika',
+//         password : 'krutika@123',
+//         database : 'project-273',
+//         port	 : 3306
+//     });
+//     return connectionPool;
+// }
 
-function fetchData(callback,sqlQuery){
+exports.fetchData = (callback, sqlQuery) => {
 
-    console.log("\nSQL Query::"+sqlQuery);
+    console.log("\nSQL Query:: " + sqlQuery);
 
     var connection=getConnection();
 
@@ -39,14 +49,27 @@ function fetchData(callback,sqlQuery){
         }
         else
         {	// return err or result
-            console.log("DB Results:"+rows);
+            console.log("DB Results:" + JSON.stringify(rows));
 
         }
         callback(err, rows);
         connection.end();
     });
     console.log("\nConnection closed..");
-
 }
 
-exports.fetchData=fetchData;
+exports.insertData = (callback, sqlQuery) => {
+	  console.log("\nSQL Query:: " + sqlQuery);
+    connection.query(sqlQuery, function (err, result) {
+      if (err) {
+        console.log("ERROR: " + err.message);
+        throw err;
+      } else {
+        console.log("Results: \n" + JSON.stringify(result));
+        console.log("The inserted id is: " + result.insertId);
+        callback(err, result);
+      }
+      connection.end();
+    });
+    console.log("\nConnection closed..");
+}

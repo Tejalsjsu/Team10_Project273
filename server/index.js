@@ -50,6 +50,8 @@ if (cluster.isMaster) {
     app.use('/movies', movies);
   var booking = require('./routes/booking');
     app.use('/booking', booking);
+  var adminSqlRoutes = require('./routes/adminSqlRoutes');
+    app.use('/adminSqlRoutes', adminSqlRoutes);
 
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets

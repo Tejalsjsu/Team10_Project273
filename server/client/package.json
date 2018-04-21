@@ -15,7 +15,7 @@
     "/booking/*": {
       "target": "http://localhost:5011"
     }
-},
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "lodash": "^4.17.5",
