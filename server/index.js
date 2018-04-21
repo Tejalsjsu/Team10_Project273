@@ -45,6 +45,8 @@ if (cluster.isMaster) {
   require('./routes/uploadRoutes')(app);
   require('./routes/publicRoutes')(app);
   require('./routes/billingRoutes')(app);
+  var admin = require('./routes/admin');
+  app.use('/admin',admin);
 
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets

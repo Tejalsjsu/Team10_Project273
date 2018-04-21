@@ -70,6 +70,10 @@ class Header extends Component {
                 <li>
                   <Link to="/secure/movieUpload">Upload Movie</Link>
                 </li>
+				<li>
+				{/*if user is admin then show this link*/}
+                  <Link to="/addMovieHall">Add Movie Hall</Link>
+                </li>
               </ul>
 
               <ul className="nav navbar-nav navbar-right">

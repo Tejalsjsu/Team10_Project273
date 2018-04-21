@@ -6,6 +6,7 @@ import Header from './Header';
 import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
+import Admin from '../components/admin/Admin';
 
 class App extends Component {
   componentDidMount() {
@@ -19,6 +20,8 @@ class App extends Component {
             <Header />
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
+			<Route exact path="/addMovieHall" component={Admin} />
+			
             <Secure />
           </div>
         </BrowserRouter>
