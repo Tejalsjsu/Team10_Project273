@@ -6,7 +6,6 @@ import './movieDetails.css';
 import {connect} from "react-redux";
 import ReactPlayer from 'react-player';
 
-
 class MovieDetails extends React.Component {
 
     constructor() {

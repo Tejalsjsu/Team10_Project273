@@ -7,6 +7,8 @@ import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
 import MovieDetails from './MovieDetails';
+import AdminBillsView from './Admin/Bills';
+import AdminBillInfoView from './Admin/DisplayBill';
 
 class App extends Component {
   componentDidMount() {
@@ -23,6 +25,8 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
             <Route exact path="/movie-details/:movie_id" component={MovieDetails} />
+            <Route exact path="/admin-bills-page" component={AdminBillsView} />
+            <Route exact path="/admin-bill-info/:billingId" component={AdminBillInfoView} />
             <Secure />
           </div>
           </div>

@@ -14,6 +14,9 @@
     },
     "/booking/*": {
       "target": "http://localhost:5011"
+    },
+    "/adminSqlRoutes/*": {
+      "target": "http://localhost:5011"
     }
   },
   "dependencies": {
@@ -24,6 +27,7 @@
     "moment": "^2.22.1",
     "rc-slider": "^8.6.1",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-bootstrap-table-next": "^0.1.8",
     "react-chartjs-2": "^2.7.0",
     "react-datepicker": "^1.4.1",
