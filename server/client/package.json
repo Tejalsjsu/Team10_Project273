@@ -4,10 +4,10 @@
   "private": true,
   "proxy": {
     "/auth/google": {
-      "target": "http://localhost:5011"
+      "target": "http://localhost:5003"
     },
     "/api/*": {
-      "target": "http://localhost:5011"
+      "target": "http://localhost:5003"
     }
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
+    "react-stars": "^2.2.5",
     "react-stripe-checkout": "^2.6.3",
     "redux": "^3.7.2",
     "redux-form": "^7.2.3",

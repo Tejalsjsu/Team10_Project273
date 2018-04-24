@@ -17,7 +17,7 @@ if (cluster.isMaster) {
   require('./models/User');
   require('./models/Movie');
   require('./services/passport');
-
+  require('./services/cache');
   const options = {
     autoIndex: false, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
