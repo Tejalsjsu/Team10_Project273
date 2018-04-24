@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BILLS, BILL_DETAILS, REVENUE } from './adminTypes';
+import { BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS } from './adminTypes';
 
 export const latest10Bills = () => async dispatch => {
   const res = await axios.get('/adminSqlRoutes/latest10Bills');
@@ -56,4 +56,13 @@ export const getRevenueByHall = (hallId) => async dispatch => {
                                   }
                               });
   dispatch({ type: REVENUE, payload: res.data.result });
+};
+
+export const updatePageClick = (pageName) => async dispatch => {
+  const res = await axios.post('/graphs/updatePageClick', {'page': pageName});
+};
+
+export const getPageClicks = () => async dispatch => {
+  const res = await axios.get('/graphs/getPageClicks');
+  dispatch({ type: PAGE_CLICKS, payload: res.data.result });
 };

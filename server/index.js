@@ -7,7 +7,8 @@ if (cluster.isMaster) {
   cluster.fork();
 } else {
   //child mode, act like a server
-
+  // Connect to mongoDB
+  let mongoConnect = require('./models/mongooseConnection');
   const express = require('express');
   const mongoose = require('mongoose');
   const bodyParser = require('body-parser');
@@ -18,15 +19,15 @@ if (cluster.isMaster) {
   require('./models/Movie');
   require('./services/passport');
 
-  const options = {
-    autoIndex: false, // Don't build indexes
-    reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-    reconnectInterval: 500, // Reconnect every 500ms
-    poolSize: 100, // Maintain up to 10 socket connections
-    // If not connected, return errors immediately rather than waiting for reconnect
-    bufferMaxEntries: 0
-  };
-  mongoose.connect(key.mongoURI, options);
+  // const options = {
+  //   autoIndex: false, // Don't build indexes
+  //   reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  //   reconnectInterval: 500, // Reconnect every 500ms
+  //   poolSize: 100, // Maintain up to 10 socket connections
+  //   // If not connected, return errors immediately rather than waiting for reconnect
+  //   bufferMaxEntries: 0
+  // };
+  // mongoose.connect(key.mongoURI, options);
 
   const app = express();
   app.use(bodyParser.json());
@@ -52,6 +53,8 @@ if (cluster.isMaster) {
     app.use('/booking', booking);
   var adminSqlRoutes = require('./routes/adminSqlRoutes');
     app.use('/adminSqlRoutes', adminSqlRoutes);
+  var adminGraphRoutes = require('./routes/adminGraphRoutes');
+    app.use('/graphs', adminGraphRoutes);
 
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets

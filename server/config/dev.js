@@ -3,7 +3,7 @@ module.exports = {
   googleClientID:
     '857476562674-e5ak8r6nlc6p6a6nvggdaajh5l3du42v.apps.googleusercontent.com',
   googleClientSecret: 'SFh_QCxshY4EJLyF-UIuP692',
-  mongoURI: 'mongodb://root:cisco123@ds221258.mlab.com:21258/273-dev',
+  mongoURI: 'mongodb://root:password123@ds255539.mlab.com:55539/mongofandango',
   cookieKey: 'randomkeysofcharacter',
   accessKeyId: 'AKIAIWVDA5LALMWBST6Q',
   secretAccessKey: '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',

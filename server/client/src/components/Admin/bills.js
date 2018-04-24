@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import {latest10Bills, searchByDate, searchByMonth} from "../../actions/adminActions";
+import {latest10Bills, searchByDate, searchByMonth, updatePageClick} from "../../actions/adminActions";
+import {BILLS} from '../../actions/pageClickEnums';
 import {connect} from "react-redux";
 import DatePicker from 'react-datepicker';
 import './datePicker.css';
@@ -55,6 +56,7 @@ class Bills extends Component {
   componentDidMount() {
     console.log("Did mount called in bills");
     this.props.latest10Bills();
+    this.props.updatePageClick(BILLS);
   }
 
   onButtonClick() {
@@ -151,4 +153,4 @@ function mapStateToProps({ admin }) {
   return { admin };
 }
 
-export default connect(mapStateToProps, {latest10Bills, searchByDate, searchByMonth})(withRouter(Bills));
+export default connect(mapStateToProps, {latest10Bills, searchByDate, searchByMonth, updatePageClick})(withRouter(Bills));

@@ -1,9 +1,10 @@
-import {BILLS, BILL_DETAILS, REVENUE} from '../actions/adminTypes';
+import {BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS} from '../actions/adminTypes';
 
 const initialState = {
     bills: [],
     billDetails: {},
-    revenue: {}
+    revenue: {},
+    pageClicks: {}
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -26,6 +27,13 @@ const adminReducer = (state = initialState, action) => {
         state={
           ...state,
           revenue: action.payload
+        };
+    break;
+
+    case PAGE_CLICKS:
+        state={
+          ...state,
+          pageClicks: action.payload
         };
     break;
 

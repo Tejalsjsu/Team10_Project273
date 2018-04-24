@@ -17,6 +17,9 @@
     },
     "/adminSqlRoutes/*": {
       "target": "http://localhost:5011"
+    },
+    "/graphs/*": {
+      "target": "http://localhost:5011"
     }
   },
   "dependencies": {
