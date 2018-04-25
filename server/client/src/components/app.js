@@ -7,6 +7,8 @@ import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
 import MovieDetail from './Movie/MovieDetail';
+import MovieLocation from './Movie/MovieLocations';
+import MovieCheckout from './Movie/MovieCheckout';
 import Footer from './Footer';
 import Admin from '../components/admin/Admin';
 import AdminDashboard from '../components/admin/AdminDashboard';
@@ -29,6 +31,16 @@ class App extends Component {
             />
             <Route exact path="/addMovieHall" component={Admin} />
             <Route exact path="/adminDasboard" component={AdminDashboard} />
+            <Route
+              exact
+              path="/public/movieLocations/:movieId"
+              component={MovieLocation}
+            />
+            <Route
+              exact
+              path="/public/checkout/:movieId/:locationId"
+              component={MovieCheckout}
+            />
             <Secure />
             <Footer />
           </div>

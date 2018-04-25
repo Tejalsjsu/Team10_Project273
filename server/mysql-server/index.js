@@ -15,7 +15,6 @@ if (cluster.isMaster) {
   const cookieSession = require('cookie-session');
   const passport = require('passport');
   const key = require('./config/keys');
-
   const app = express();
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,26 +34,7 @@ if (cluster.isMaster) {
   var adminRoutes = require('./routes/adminRoutes');
   app.use('/adminRoutes', userRoutes);
 
-  //Return all Movies
-  app.get('/api/getMovies', (req, res) => {
-    const sql = 'SELECT * FROM Movies';
-    pool.getConnection(function(error, conn) {
-      console.log(error);
-      console.log('My Query is', sql);
-      conn.query(sql, (err, results) => {
-        if (err) return res.send(400);
-        console.log(results);
-        if (err) {
-          res.status(401).send({ message: 'Error getting All Movies' });
-          return;
-        } else {
-          res.status(200).send(results);
-        }
-      });
-      conn.release();
-    });
-  });
-
+  require('./routes/movieRoutes')(app);
   const PORT = process.env.PORT || 5003;
   app.listen(PORT, () => {
     console.log(`Listening on port`, PORT);

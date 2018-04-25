@@ -63,25 +63,24 @@ class MovieDetail extends Component {
               />
 
               <ul>
-                <li>
-                  {this.state.movie.title}
-                </li>
-                <li>
-                  {this.state.movie.description}
-                </li>
-                <li>
-                  Genre: {this.state.movie.genre}
-                </li>
-                <li>
-                  Length: {this.state.movie.movieLengthInMin}mins
-                </li>
+                <li>{this.state.movie.title}</li>
+                <li>{this.state.movie.description}</li>
+                <li>Genre: {this.state.movie.genre}</li>
+                <li>Length: {this.state.movie.movieLengthInMin}mins</li>
               </ul>
             </section>
             <section className="links">
               <h3>Get the tickets</h3>
               <ul className="dlinks">
                 <li>
-                  <Link to="">Tickets and locations</Link>
+                  <Link
+                    to={
+                      '/public/movieLocations/' +
+                      this.props.match.params.movieId
+                    }
+                  >
+                    Tickets and locations
+                  </Link>
                 </li>
               </ul>
             </section>

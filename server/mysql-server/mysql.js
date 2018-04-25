@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+const key = require('./config/keys');
+
 function getConnection() {
   const connectionPool = mysql.createPool({
-    connectionLimit: 10,
+    connectionLimit: 30,
     host: key.MySqlHost,
     user: key.MySqlUser,
     password: key.MySqlPass,
@@ -15,7 +17,6 @@ function getConnection() {
 
 exports.fetchData = (callback, sqlQuery) => {
   console.log('\nSQL Query:: ' + sqlQuery);
-
   var connection = getConnection();
 
   connection.query(sqlQuery, function(err, rows, fields) {
