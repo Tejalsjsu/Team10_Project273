@@ -7,6 +7,7 @@ import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
 import Admin from '../components/admin/Admin';
+import AdminDashboard from '../components/admin/AdminDashboard';
 
 class App extends Component {
   componentDidMount() {
@@ -21,7 +22,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
 			<Route exact path="/addMovieHall" component={Admin} />
-			
+              <Route exact path="/adminDasboard" component={AdminDashboard} />
             <Secure />
           </div>
         </BrowserRouter>

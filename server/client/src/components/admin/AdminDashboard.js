@@ -4,6 +4,12 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import * as getData from '../../actions/adminActions';
 import {adminData} from "../../reducers/adminReducer";
+//import PieChart from 'react-simple-pie-chart';
+//import BarChart from 'react-bar-chart';
+import {BarChart} from 'react-easy-chart';
+import {PieChart} from 'react-easy-chart';
+
+
 
 //import {Link} from 'react-router-dom';
 
@@ -136,6 +142,24 @@ class Admin extends React.Component {
     render(){
 		const {adminData} = this.props;
 		console.log("varshaData inside render ",this.props.varshaData);
+
+        var crDr = {};
+        var crDrlist= [];
+        crDr = {color:'#008080',value:0};
+        crDrlist.push(crDr);
+        crDr = {color:'#808000',value:0};
+        crDrlist[1] = crDr;
+
+        crDrlist[0].value = 12;
+        crDrlist[1].value = 15;
+
+
+        const data = [
+            {text: 'Man', value: 500},
+            {text: 'Woman', value: 300}
+        ];
+
+        const margin = {top: 20, right: 20, bottom: 30, left: 40};
         return(
             <div>
                 Add Movie Hall
@@ -151,7 +175,37 @@ class Admin extends React.Component {
 				<br/>
                 {this.state.aMessage ? this.state.aMessage : ""}
                 <br/><br/>
-				
+
+                pie chart
+
+
+                    <PieChart
+                        data={[
+                            { key: 'A', value: 100 },
+                            { key: 'B', value: 200 },
+                            { key: 'C', value: 50 }
+                        ]}
+                    />
+                <BarChart
+                    data={[
+                        {x: 'A', y: 20},
+                        {x: 'B', y: 30},
+                        {x: 'C', y: 40},
+                        {x: 'D', y: 20},
+                        {x: 'E', y: 40},
+                        {x: 'F', y: 25},
+                        {x: 'G', y: 5}
+                    ]}
+                />
+                    <PieChart
+                        size={400}
+                        innerHoleSize={200}
+                        data={[
+                            { key: 'A', value: 100, color: '#aaac84' },
+                            { key: 'B', value: 200, color: '#dce7c5' },
+                            { key: 'C', value: 50, color: '#e3a51a' }
+                        ]}
+                    />
 				
                 Search Movie Hall
 				<hr/><br/><br/>

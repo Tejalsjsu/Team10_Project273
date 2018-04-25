@@ -10,9 +10,10 @@ console.log("inside add movie Hall data",hallData);
     }
 }
 
-export function searchMovieHall(hallData){
+export function searchMovieHall(searchData){
     return dispatch => {
-        return axios.get('http://localhost:5011/admin/searchMovieHall',hallData).then((response)=>{
+        console.log("inside search movie Hall data",searchData);
+        return axios.post('/admin/searchMovieHall',{searchStr : searchData}).then((response)=>{
             dispatch(searchMvHall(response.data));
     });
     }
@@ -20,7 +21,7 @@ export function searchMovieHall(hallData){
 
 export function updateMovieHall(hallData){
     return dispatch => {
-        return axios.post('http://localhost:5011/admin/updateMovieHall',hallData).then((response)=>{
+        return axios.post('admin/updateMovieHall',hallData).then((response)=>{
             dispatch(updateMvHall(response.data));
     });
     }

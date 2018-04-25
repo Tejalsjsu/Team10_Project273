@@ -11,22 +11,25 @@ export const data = (state =  {
             state= {
                 ...state,
                 message:action.payload
-
             };
+            break;
             console.log("inside ADD_HALL after setting",state);
 
         case "SEARCH_HALL":
             console.log("inside search hall reducer",action.payload);
             state= {
                 ...state,
-                hallData:action.payload
+                hallData:action.payload,
+                message : "searched"
             };
+            console.log("Hall Data",state.hallData);
             break;
         case "UPDATE_HALL":
             console.log("inside update hall reducer",action.payload);
             state= {
                 ...state,
-                message:action.payload
+                hallData : action.payload.hallData,
+                message:action.payload.message
             };
             break;
         default:

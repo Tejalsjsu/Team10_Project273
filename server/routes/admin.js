@@ -8,12 +8,43 @@ router.get('/', function(req, res, next) {
 
 router.post('/addMovieHall', function(req, res){
 
-    console.log("Inside add Movie Hall");
+    console.log("Inside add Movie Hall!!!!!");
+    console.log("hallName", req.param("hallName"));
+    console.log("t1", req.param("t1"));
+    console.log("t2", req.param("t2"));
+    console.log("t3", req.param("t3"));
+    console.log("nTickets", req.param("nTickets"));
+    console.log("nScreens", req.param("nScreens"));
+    console.log("tPrice", req.param("tPrice"));
+    var t1,t2,t3 = "";
+    var movie_times = "";
+    if(req.param("t1")+""!="undefined")
+    {
+        t1 = req.param("t1");
+        movie_times = t1;
+    }
+    if(req.param("t2")+""!="undefined")
+    {
+        t2 = req.param("t2");
+        if(movie_times!="")
+            movie_times = movie_times +"|"+t2;
+        else
+            movie_times = t2;
+    }
+    if(req.param("t3")+""!="undefined")
+    {
+        t3 = req.param("t3");
+        if(movie_times!="")
+            movie_times = movie_times +"|"+t3;
+        else
+            movie_times = t3;
+    }
 
+    console.log("movie times",movie_times);
     var getMaxId="select max(hall_id) as maxCnt from fandango_schema.movie_hall";
     var errors;
     console.log("max Query is:"+getMaxId);
-    /*mysql.fetchData(function (error,results) {
+    mysql.fetchData(function (error,results) {
         console.log("Inside fetch data");
         if(error){
             errors="Unable to process request";
@@ -22,7 +53,7 @@ router.post('/addMovieHall', function(req, res){
         else{
             if(results.length > 0){
                 hall_id= results[0].maxCnt+1;
-                var addMvHall="INSERT INTO fandango_schema.movie_hall(hall_id,movie_times,number_of_tickets,screen_number,ticket_price) VALUES ( "+hall_id+"','"+req.param("movie_times")+"','"+req.param("number_of_tickets")+"','"+req.param("screen_number")+"','"+req.param("ticket_price");
+                var addMvHall="INSERT INTO fandango_schema.movie_hall(hall_id,hall_name,movie_times,number_of_tickets,screen_number,ticket_price) VALUES ( "+hall_id+","+"'"+req.param("hallName")+"'"+","+"'"+movie_times+"'"+","+req.param("nTickets")+","+req.param("nScreens")+","+req.param("tPrice")+")";
                 console.log("insert Query is:  "+addMvHall);
                 mysql.fetchData(function (error,results) {
                     if(error){
@@ -32,81 +63,124 @@ router.post('/addMovieHall', function(req, res){
                     else{
                         if(results.affectedRows > 0){
                             console.log("inserted"+JSON.stringify(results));
-                            //res.send("Movie Hall added Successfully");
+                            //res.status(200).json({status:"OK"});
+                            res.send("Movie Hall added Successfully");
                         }
                     }
                 },addMvHall);
             }
         }
-    },getMaxId);*/
-	res.send("Movie Hall added Successfully");
+    },getMaxId);
+	//res.send("Movie Hall added Successfully");
 });
 
 
-router.get('/searchMovieHall', function(req, res){
+router.post('/searchMovieHall', function(req, res){
     console.log("Inside search Movie Hall");
-    /*var list= [];
-    var data = {
-        bList: []
-    };
-    var project_id= req.param("project_id");
-
-    var getProjectList="select u.user_id, b.project_id, u.profile_image, u.name, b.bid_price, b.period_in_days";
-    getProjectList= getProjectList + " from freelancer_prototype_db.user u, freelancer_prototype_db.bid b ";
-    getProjectList= getProjectList + " where b.user_id = u.user_id and b.project_id = "+project_id;
-
-    console.log(getProjectList);
-    mysql.fetchData(function(err,results){
-        if(results.length > 0) {
-            var i = 0;
-            while(i<results.length) {
-                var project = {
-                    user_id : results[i].user_id,
-                    project_id : results[i].project_id,
-                    profile_image: results[i].profile_image,
-                    name: results[i].name,
-                    bid_price: results[i].bid_price,
-                    period_in_days: results[i].period_in_days
-                }
-                list.push(project);
-                i++;
-            }
-            data.bList = list;
-            res.send(data);
+    console.log("request :: ",req.param("searchStr"));
+    var searchMvHall="select * from fandango_schema.movie_hall where hall_name = "+"'"+req.param("searchStr")+"'";
+    console.log("search Query is:  "+searchMvHall);
+    mysql.fetchData(function (error,results) {
+        if(error){
+            errors="Unable to search movie hall at this time."
+            res.status(400).json({error});
         }
-    },getProjectList);*/
+        else{
+            if(results.length > 0){
+                var hallData = {
+                    hall_id : results[0].hall_id,
+                    hallName : results[0].hall_name,
+                    movie_times : results[0].movie_times,
+                    nTickets : results[0].number_of_tickets,
+                    nScreens : results[0].screen_number,
+                    tPrice : results[0].ticket_price
+                };
+                console.log("movie id after if",results[0].hall_id);
+                console.log("movie hallName after if",results[0].hall_name);
+                console.log("movie movie_times after if",results[0].movie_times);
+                //res.status(200).json({status:"OK"});
+                res.send(hallData);
+            }
+        }
+    },searchMvHall);
 });
 
-router.get('/updateMovieHall', function(req, res){
+router.post('/updateMovieHall', function(req, res){
     console.log("Inside update Movie Hall");
-    /*var list= [];
-    var data = {
-        bList: []
-    };
-    var user_id= req.session.userID;
-    var getProjectList = "select p.project_id, u.user_id, p.title, u.name, p.avg_bid, b.bid_price,p.status ";
-    getProjectList = getProjectList + " from freelancer_prototype_db.bid b, freelancer_prototype_db.project p, freelancer_prototype_db.user u ";
-    getProjectList = getProjectList + " where b.project_id = p.project_id and p.status = '"+"Open"+"' and u.user_id = b.user_id and b.user_id = "+user_id;
-    mysql.fetchData(function(err,results){
-        if(results.length > 0) {
-            var i = 0;
-            while(i<results.length) {
-                var project = {
-                    project_id : results[i].project_id,
-                    user_id : results[i].user_id,
-                    ProjectName: results[i].title,
-                    EmpName: results[i].name,
-                    avg_bid: results[i].avg_bid,
-                    bid_price: results[i].bid_price,
-                    status: results[i].status
-                }
-                list.push(project);
-                i++;
-            }
-            data.bList = list;
-            res.send(data);
+    console.log("hallName", req.param("hallName"));
+    console.log("t1", req.param("t1"));
+    console.log("t2", req.param("t2"));
+    console.log("t3", req.param("t3"));
+    console.log("nTickets", req.param("nTickets"));
+    console.log("nScreens", req.param("nScreens"));
+    console.log("tPrice", req.param("tPrice"));
+    var t1,t2,t3 = "";
+    var movie_times = "";
+    if(req.param("t1")+""!="undefined")
+    {
+        t1 = req.param("t1");
+        movie_times = t1;
+    }
+    if(req.param("t2")+""!="undefined")
+    {
+        t2 = req.param("t2");
+        if(movie_times!="")
+            movie_times = movie_times +"|"+t2;
+        else
+            movie_times = t2;
+    }
+    if(req.param("t3")+""!="undefined")
+    {
+        t3 = req.param("t3");
+        if(movie_times!="")
+            movie_times = movie_times +"|"+t3;
+        else
+            movie_times = t3;
+    }
+    console.log("movie times",movie_times);
+    console.log("movie times before update", req.param("movieTimesBfr"));
+    var data = {};
+    var updateMvHall="UPDATE fandango_schema.movie_hall SET hall_name = "+"'"+req.param("hallName")+"'"+", movie_times = "+"'"+movie_times+"'"+",number_of_tickets = "+req.param("nTickets")+",screen_number = "+req.param("nScreens")+",ticket_price = "+req.param("tPrice")+" WHERE hall_id = "+req.param("hall_id");
+    console.log("update Query is:  "+updateMvHall);
+    mysql.fetchData(function (error,results) {
+        if(error){
+            errors="Unable to add project at this time."
+            res.status(400).json({error});
         }
-    },getProjectList);*/
+        else{
+            if(results.affectedRows > 0){
+                console.log("updated"+JSON.stringify(results));
+
+                var getUpdatedHall="select * from fandango_schema.movie_hall where hall_name = "+"'"+req.param("hallName")+"'";
+                console.log("search Query is:  "+getUpdatedHall);
+                mysql.fetchData(function (error,results) {
+                    if(error){
+                        errors="Unable to search movie hall at this time."
+                        res.status(400).json({error});
+                    }
+                    else{
+                        if(results.length > 0){
+                            var hallData = {
+                                hall_id : results[0].hall_id,
+                                hallName : results[0].hall_name,
+                                movie_times : results[0].movie_times,
+                                nTickets : results[0].number_of_tickets,
+                                nScreens : results[0].screen_number,
+                                tPrice : results[0].ticket_price
+                            };
+
+                            var data = {
+                                message : "Movie Hall updated Successfully",
+                                hallData : hallData
+                            };
+                            //res.status(200).json({status:"OK"});
+                            res.send(data);
+                        }
+                    }
+                },getUpdatedHall);
+            }
+        }
+    },updateMvHall);
 });
 
 module.exports = router;
