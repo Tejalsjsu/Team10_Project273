@@ -8,6 +8,9 @@ import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
 import MovieDetail from './Movie/MovieDetail';
 import Footer from './Footer';
+import Admin from '../components/admin/Admin';
+import AdminDashboard from '../components/admin/AdminDashboard';
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
@@ -24,6 +27,8 @@ class App extends Component {
               path="/public/moviedetail/:movieId"
               component={MovieDetail}
             />
+            <Route exact path="/addMovieHall" component={Admin} />
+            <Route exact path="/adminDasboard" component={AdminDashboard} />
             <Secure />
             <Footer />
           </div>
