@@ -8,11 +8,12 @@ let logo = require('../../images/login-logo.png');
 let google = require('../../images/google.png');
 
 
-class Login extends Component{
+class Signup extends Component{
     constructor(props){
         super(props);
         this.state = {
             userdata: {
+                firstName:'',
                 password: '',
                 email: '',
                 token:'',
@@ -24,9 +25,12 @@ class Login extends Component{
         };
     }
 
-    verifyLogin(){
+    signUp(){
       let errors = [];
       let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if(this.state.userdata.firstName.length === 0){
+            errors.push("Kindly enter your name");
+      }
       if(this.state.userdata.email.length === 0){
            errors.push("Kindly enter email");
        } else if (!email_regex.test(this.state.userdata.email)){
@@ -92,6 +96,17 @@ class Login extends Component{
                     <div className="p-buttom">
                       <img src={logo} alt="logo" className="login-img"></img>
                     </div>
+                    <div className="p-buttom"> First Name </div>
+                    <input type="email" className="form-control p-top" placeholder="Enter email" value={this.state.userdata.firstName}
+
+                                   onChange={(event) => {
+                                       this.setState({
+                                           userdata: {
+                                               ...this.state.userdata,
+                                               firstName: event.target.value
+                                           }
+                                       });
+                                   }}/> <br/>
                     <div className="p-buttom"> Email Address </div>
                     <input type="email" className="form-control p-top" placeholder="Enter email" value={this.state.userdata.email}
 
@@ -114,16 +129,11 @@ class Login extends Component{
                                        });
                                    }}/><br/>
                                    <div className="p-buttom p-top">
-                            <Button bsStyle="success" bsSize="sm" block onClick={()=>this.verifyLogin()}> Login </Button>
+                            <Button bsStyle="success" bsSize="sm" block onClick={()=>this.signUp()}> Create Account </Button>
                             </div>
                             <hr/>
-                            <div className="p-buttom">
-                               <a href="/auth/google"> <img src={google} alt="logo" className="google-img"></img></a>
-                              <br/>
 
-
-                            </div>
-                            Not a member yet?? <a href="/Signup"> Signup Now!! </a><br/><br/><br/><br/><br/>
+                            <br/><br/><br/><br/><br/>
 
                     </div>
 
@@ -140,4 +150,4 @@ function mapStateToProps({ user }) {
   return { user };
 }
 
-export default connect(mapStateToProps, { verifyLogin })(withRouter(Login));
+export default connect(mapStateToProps, { verifyLogin })(withRouter(Signup));

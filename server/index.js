@@ -46,6 +46,9 @@ if (cluster.isMaster) {
   require('./routes/publicRoutes')(app);
   require('./routes/billingRoutes')(app);
 
+  var userRoutes = require('./routes/userRoutes');
+    app.use('/userRoutes', userRoutes);
+
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets
     //like our main.js file, or main.css file

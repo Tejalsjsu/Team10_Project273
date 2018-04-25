@@ -1,112 +1,113 @@
 import React, {Component} from 'react';
-import {Link, withRouter, Route} from 'react-router-dom';
-import "../App.css"
+import {Link, withRouter, Route, NavLink} from 'react-router-dom';
 import {Button} from 'react-bootstrap';
-import  logo from '../image/fl-logo.png';
-import * as API from '../api/index';
-import Dashboard from './dashboard';
-import Signup from './signup';
 import cookie from 'react-cookies';
-let imgStyle = {height: '70px', padding: '10px'};
-let divStyle2 = {height:'45px'};
-let divStyle3 ={backgroundColor:'#E3E1E1'};
-let divStyle1 = {align: 'center', backgroundColor: '#FEFDFD', padding: '28px', marginTop: '1px'};
+import {connect} from "react-redux";
+import {verifyLogin} from "../../actions/userActions";
+let logo = require('../../images/login-logo.png');
+let google = require('../../images/google.png');
 
-class Login extends Component{
+
+class EditProfile extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            userdata: {
+                password: '',
+                email: '',
+                token:'',
+                userId:''
+            },
+            isLoggedIn: false,
+            validation_error: [],
+            message: ''
+        };
     }
 
+    verifyLogin(){
+      let errors = [];
+      let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if(this.state.userdata.email.length === 0){
+           errors.push("Kindly enter email");
+       } else if (!email_regex.test(this.state.userdata.email)){
+           errors.push("Invalid Email");
+       }
+       if(this.state.userdata.password.length === 0){
+             errors.push("Kindly enter a password");
+       }
 
-    state = {
-        userdata: {
-            username: '',
-            password: '',
-            email: '',
-            token:'',
-            userId:''
-        },
-        isLoggedIn: false,
-        message: ''
-    };
+        if(errors.length === 0) {
+          //Check in database
+          console.log("In no errors");
+          this.props.verifyLogin(this.state.userdata)
+          .then((data)=>{
+            this.setState({
+              message: data.message
+            })
+          },
+         (err) => {
+           console.log(err);
+           this.setState({
+             message: "Could not Login. Please try again"
+           })
+         });
+        }else{
+          this.setState ({
+                validation_error: errors
+            })
+        }
 
-    componentWillMount(){
-        this.setState({
-            username: '',
-            password: '',
-            email:'',
-            token:'',
-            userId:''
-        });
     }
 
-    handleSubmit = () => {
-        API.doLogin(this.state.userdata)
-            .then((res) => {
-                if (res.status === '201') {
-                    console.log("in 201"+res.email);
-                    this.setState({
-                        isLoggedIn: true,
-                        message: "Welcome to my App..!!",
-                        email: res.email,
-                        username: this.state.userdata.name,
-                        token: res.token,
-                        userId : res.userId
-                    });
-                    cookie.save('userId', this.state.userId, { path: '/' });
-                    this.props.history.push("/dashboard");
-                } else if (res.status === '401') {
-                    console.log("in fail");
-                    this.setState({
-                        isLoggedIn: false,
-                        message: "Wrong username or password. Try again..!!"
-                    });
-                    this.props.history.push("/login");
-                }
-            });
-    };
 
     render(){
         return(
-            <div style={divStyle3}>
-
-                <Route exact path="/login" render={() =>(
+          <div>
+          <div className="page-header-container">
+            <div className="row">
+            <h1 className="page-header">
+              <span>FUNDANGO</span>
+              <span className="page-header-emphasis">VIP</span>
+            </h1>
+            <nav className="page-navigation">
+              <ul className="page-navigation-list">
+                <li><NavLink className="page-navigation-link" to="/User/EditProfile"> PROFILE </NavLink> </li>
+              </ul>
+              <ul className="page-navigation-list">
+                <li><NavLink className="page-navigation-link" to="">  PURCHASE HISTORY </NavLink> </li>
+              </ul>
+            </nav>
+            </div>
+          </div>
+            <div className="normal">
+            <div className="normal container">
+                {/*<div className="col-md-3">*/}
+                {this.state.validation_error && (
                     <div>
-                        <div className="col-sm-4" style={divStyle2}> </div>
+                        {this.state.validation_error.map((item,index)=><div key={index} className="alert alert-danger" role="alert">{item}</div>)}
+                    </div>
+                )}
 
-                        <div style={divStyle1} className="col-sm-3">
-                {/*<div>*/}
-                        {/*<div>*/}
+                <div >
+                    {/*<div className="col-md-3">*/}
+                    {this.state.message && (
+                        <div className="alert alert-warning" role="alert">
+                            {this.state.message}
+                        </div>
+                    )}
+                    {/*</div>*/}
+                </div>
+                {/*</div>*/}
+            </div>
 
-                            <img src={logo} style={imgStyle} alt="logo"/>
-                            <hr color="#E3E1E1"/>
-                            <input type="email" className="form-control" placeholder="Enter email" value={this.state.userdata.username}
+            </div>
+            </div>
+            )
+          }
+        }
 
-                                   onChange={(event) => {
-                                       this.setState({
-                                           userdata: {
-                                               ...this.state.userdata,
-                                               username: event.target.value
-                                           }
-                                       });
-                                   }}/> <br/>
-                            <input type="password" className="form-control" placeholder="Enter Password" value={this.state.userdata.password}
-                                   onChange={(event) => {
-                                       this.setState({
-                                           userdata: {
-                                               ...this.state.userdata,
-                                               password: event.target.value
-                                           }
-                                       });
-                                   }}/><br/>
-                            <Button bsStyle="success" bsSize="sm" block
-                                onClick={() => this.handleSubmit()}> Login </Button>
-
-                            <hr color="#E3E1E1"/>
-
-                )}/>
-
-    }
+function mapStateToProps({ user }) {
+  return { user };
 }
 
-export default withRouter(Login);
+export default connect(mapStateToProps, { verifyLogin })(withRouter(EditProfile));

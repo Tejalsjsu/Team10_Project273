@@ -6,6 +6,9 @@ import Header from './Header';
 import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
+import Login from './User/Login'
+import Signup from './User/Signup';
+import EditProfile from './User/EditProfile';
 import '../app.css';
 
 let logo = require('../images/logo-1.png');
@@ -33,11 +36,14 @@ class App extends Component {
           </div>
 
         </div>
-      
+
           <div >
             <Header />
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
+            <Route exact path="/User/Login" component={Login} />
+            <Route exact path="/Signup" component={Signup} />
+            <Route exact path="/User/EditProfile" component={EditProfile} />
             <Secure />
           </div>
           </div>

@@ -11,7 +11,7 @@
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm build  --prefix client",
     "client": "npm start  --prefix client",
-    "server": "node index.js",
+    "server": "nodemon index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.5",
     "mongoose": "^5.0.2",
+    "my-sql": "^1.2.15",
     "nodemon": "^1.14.11",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^1.0.0",

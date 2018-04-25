@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {NavLink, Link } from 'react-router-dom';
-import Payments from './Payment/Payments';
+// import Payments from './Payment/Payments';
 let logo = require('../images/logo-1.png');
 class Header extends Component {
   renderContent() {
@@ -11,7 +11,7 @@ class Header extends Component {
         return;
       case false:
         return (
-<NavLink to="/users/Login" className="global-menu-li navLink">Login</NavLink>
+<NavLink to="/User/Login" className="global-menu-li navLink">Login</NavLink>
           // <li>
           //   <NavLink to='/users/Login'> Login </NavLink>
           // </li>
@@ -19,7 +19,7 @@ class Header extends Component {
       default:
         return [
           <li key="1">
-            <Payments />
+
           </li>,
           <li key="2">
             <a href="/api/logout">Logout</a>
@@ -69,7 +69,10 @@ class Header extends Component {
               <NavLink to="/ViewNewMovies" className="global-menu-li navLink">New Movies</NavLink>
             </li>
             <li className="global-menu-li">
-              <NavLink to="/secure/movieUpload" className="global-menu-li navLink">Upload Movie</NavLink>
+              <NavLink to="/secure/movieUpload" className="global-menu-li navLink">Book Movies</NavLink>
+            </li>
+            <li className="global-menu-li">
+              <NavLink to="/User/EditProfile" className="global-menu-li navLink">My VIP Account</NavLink>
             </li>
             <li className="global-menu-li">
                     {this.renderContent()}

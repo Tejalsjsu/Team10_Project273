@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import MovieUploadForm from './MovieHall/MovieUpload/MovieUploadForm';
 
+
 const Dashboard = () => <h2> DashBoard</h2>;
 
 class Secure extends Component {
@@ -9,7 +10,7 @@ class Secure extends Component {
     console.log('Secure is here');
     return (
       <div>
-        <div className="container">
+        <div>
           <Route exact path="/secure/dashboard" component={Dashboard} />
 
           <Route exact path="/secure/movieUpload" component={MovieUploadForm} />
