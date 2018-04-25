@@ -34,6 +34,7 @@ if (cluster.isMaster) {
     port: key.MySqlPort,
     database: key.MySqlDatabase
   });
+  require('./routes/admin')(app);
   //Return all Movies
   app.get('/api/getMovies', (req, res) => {
     const sql = 'SELECT * FROM Movies';
