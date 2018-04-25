@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import fandango from '../fandango-LOGO3.svg';
 import Payments from './Payment/Payments';
 class Header extends Component {
   renderContent() {
@@ -33,57 +34,33 @@ class Header extends Component {
       color: 'lightblue'
     };
     return (
-      <nav className="navbar navbar-default">
-        <div className="container-fluid">
-          <div>
-            <div className="navbar-header navbar-inverse">
-              <button
-                type="button"
-                className="navbar-toggle collapsed"
-                data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-              </button>
+        <div>
 
-              <Link
-                to={this.props.auth ? '/secure/dashboard' : '/'}
-                className="navbar-brand"
-                to="/"
-              >
-                <span style={styles}>Movie</span>
-                <span style={style1}>Time</span>
-              </Link>
-            </div>
-            <div
-              className="collapse navbar-collapse"
-              id="bs-example-navbar-collapse-1"
-            >
-              <ul className="nav navbar-nav">
-                <li>
-                  <Link to="/ViewNewMovies">New Movies</Link>
-                </li>
-                <li>
-                  <Link to="/secure/movieUpload">Upload Movie</Link>
-                </li>
-              </ul>
+            <div className="App-header header-border">
+                <Link
+                    to={this.props.auth ? '/secure/dashboard' : '/'}
+                    to="/"
+                ><img src={fandango} className="App-logo" alt="logo" /></Link>
 
-              <ul className="nav navbar-nav navbar-right">
+
+            <ul className="nav navbar-nav">
                 <li>
-                  <ul className="nav navbar-nav navbar-right">
-                    {this.renderContent()}
-                  </ul>
+                    <Link to="/ViewNewMovies">New Movies</Link>
                 </li>
-              </ul>
+                <li>
+                    <Link to="/secure/movieUpload">Upload Movie</Link>
+                </li>
+            </ul>
+                <ul className="nav navbar-nav navbar-right">
+                    <li>
+                        <ul className="nav navbar-nav navbar-right">
+                            {this.renderContent()}
+                        </ul>
+                    </li>
+                </ul>
             </div>
-          </div>
         </div>
-      </nav>
-    );
+          );
   }
 }
 function mapStateToProps({ auth }) {

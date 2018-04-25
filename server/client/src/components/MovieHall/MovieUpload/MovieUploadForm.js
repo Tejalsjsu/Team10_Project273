@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { submitNewMovie } from '../../../actions';
@@ -25,8 +26,10 @@ class MovieUploadForm extends Component {
     var values = {
       title: this.state.value
     };
+	var user={};
+	user.id=20;
     var file = this.state.file;
-    this.props.submitNewMovie(values, file);
+    this.props.submitNewMovie(user,values, file);
   }
 
   onFileChange(event) {
@@ -72,6 +75,10 @@ class MovieUploadForm extends Component {
       </form>
     );
   }
+}
+function validate(values) {
+  const errors = {};
+  return errors;
 }
 
 export default connect(null, { submitNewMovie })(withRouter(MovieUploadForm));

@@ -6,8 +6,9 @@ import Header from './Header';
 import Landing from './Landing';
 import Secure from './Secure';
 import MovieView from './MovieHall/MovieView';
-import MovieDetail from './Movie/MovieDetail';
-import Footer from './Footer';
+import MovieDetails from './MovieDetails';
+import AddMovie from './AddMovie';
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
@@ -16,16 +17,16 @@ class App extends Component {
     return (
       <div>
         <BrowserRouter>
-          <div className="container">
+          <div>
             <Header />
+          <div className="container">
+
             <Route exact path="/" component={Landing} />
             <Route exact path="/public/movies" component={MovieView} />
-            <Route
-              path="/public/moviedetail/:movieId"
-              component={MovieDetail}
-            />
+            <Route exact path="/movie-details/:movie_id" component={MovieDetails} />
+            <Route exact path="/add-movie" component={AddMovie} />
             <Secure />
-            <Footer />
+          </div>
           </div>
         </BrowserRouter>
       </div>
