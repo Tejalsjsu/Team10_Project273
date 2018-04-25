@@ -45,7 +45,7 @@ class BillsInfo extends Component {
   }
 
   componentDidMount() {
-    console.log("props info: " + JSON.stringify(this.props));
+    // console.log("props info: " + JSON.stringify(this.props));
     this.props.getBill(this.state.billingId)
   }
 

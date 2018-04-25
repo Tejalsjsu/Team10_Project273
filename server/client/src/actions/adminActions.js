@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS } from './adminTypes';
+import { BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS, MOVIE_CLICKS } from './adminTypes';
 
 export const latest10Bills = () => async dispatch => {
   const res = await axios.get('/adminSqlRoutes/latest10Bills');
@@ -65,4 +65,13 @@ export const updatePageClick = (pageName) => async dispatch => {
 export const getPageClicks = () => async dispatch => {
   const res = await axios.get('/graphs/getPageClicks');
   dispatch({ type: PAGE_CLICKS, payload: res.data.result });
+};
+
+export const updateMovieClick = (movieObject) => async dispatch => {
+  const res = await axios.post('/graphs/updateMovieClick', movieObject);
+};
+
+export const getMovieClicks = () => async dispatch => {
+  const res = await axios.get('/graphs/getMovieClicks');
+  dispatch({ type: MOVIE_CLICKS, payload: res.data.results });
 };
