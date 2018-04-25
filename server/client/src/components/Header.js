@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Payments from './Payment/Payments';
+import { NavLink, Link } from 'react-router-dom';
+// import Payments from './Payment/Payments';
+
 class Header extends Component {
   renderContent() {
     console.log(this.props.auth);
@@ -10,15 +11,16 @@ class Header extends Component {
         return;
       case false:
         return (
-          <li>
-            <a href="/auth/google"> Login With Google</a>
-          </li>
+          <NavLink to="/User/Login" className="global-menu-li navLink">
+            Login
+          </NavLink>
+          // <li>
+          //   <NavLink to='/users/Login'> Login </NavLink>
+          // </li>
         );
       default:
         return [
-          <li key="1">
-            <Payments />
-          </li>,
+          <li key="1" />,
           <li key="2">
             <a href="/api/logout">Logout</a>
           </li>
@@ -33,56 +35,66 @@ class Header extends Component {
       color: 'lightblue'
     };
     return (
-      <nav className="navbar navbar-default">
-        <div className="container-fluid">
-          <div>
-            <div className="navbar-header navbar-inverse">
-              <button
-                type="button"
-                className="navbar-toggle collapsed"
-                data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-              </button>
+      <div>
+        <div className="navbar-header navbar-inverse">
+          <button
+            type="button"
+            className="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1"
+            aria-expanded="false"
+          >
+            <span className="sr-only">Toggle navigation</span>
+            <span className="icon-bar" />
+            <span className="icon-bar" />
+            <span className="icon-bar" />
+          </button>
 
-              <Link
-                to={this.props.auth ? '/secure/dashboard' : '/'}
-                className="navbar-brand"
-                to="/"
-              >
-                <span style={styles}>Movie</span>
-                <span style={style1}>Time</span>
-              </Link>
-            </div>
-            <div
-              className="collapse navbar-collapse"
-              id="bs-example-navbar-collapse-1"
-            >
-              <ul className="nav navbar-nav">
-                <li>
-                  <Link to="/ViewNewMovies">New Movies</Link>
-                </li>
-                <li>
-                  <Link to="/secure/movieUpload">Upload Movie</Link>
-                </li>
-              </ul>
-
-              <ul className="nav navbar-nav navbar-right">
-                <li>
-                  <ul className="nav navbar-nav navbar-right">
-                    {this.renderContent()}
-                  </ul>
-                </li>
-              </ul>
-            </div>
+          <Link
+            to={this.props.auth ? '/secure/dashboard' : '/'}
+            className="navbar-brand"
+            to="/"
+          >
+            <span style={styles}>Movie</span>
+            <span style={style1}>Time</span>
+          </Link>
+        </div>
+        <div id="headerwrap">
+          <div className="global-header">
+            <nav className="row">
+              <div className="float-right">
+                <ul className="global-menu nav navbar-nav">
+                  <li className="global-menu-li">
+                    <NavLink
+                      to="/ViewNewMovies"
+                      className="global-menu-li navLink"
+                    >
+                      New Movies
+                    </NavLink>
+                  </li>
+                  <li className="global-menu-li">
+                    <NavLink
+                      to="/secure/movieUpload"
+                      className="global-menu-li navLink"
+                    >
+                      Book Movies
+                    </NavLink>
+                  </li>
+                  <li className="global-menu-li">
+                    <NavLink
+                      to="/User/EditProfile"
+                      className="global-menu-li navLink"
+                    >
+                      My VIP Account
+                    </NavLink>
+                  </li>
+                  <li className="global-menu-li">{this.renderContent()}</li>
+                </ul>
+              </div>
+            </nav>
           </div>
         </div>
-      </nav>
+      </div>
     );
   }
 }

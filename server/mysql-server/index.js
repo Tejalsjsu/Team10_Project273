@@ -26,15 +26,15 @@ if (cluster.isMaster) {
     })
   );
   //MySql connection
-  const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: key.MySqlHost,
-    user: key.MySqlUser,
-    password: key.MySqlPass,
-    port: key.MySqlPort,
-    database: key.MySqlDatabase
-  });
-  require('./routes/admin')(app);
+  var userRoutes = require('./routes/userRoutes');
+  app.use('/userRoutes', userRoutes);
+
+  var userRoutes = require('./routes/userRoutes');
+  app.use('/userRoutes', userRoutes);
+
+  var adminRoutes = require('./routes/adminRoutes');
+  app.use('/adminRoutes', userRoutes);
+
   //Return all Movies
   app.get('/api/getMovies', (req, res) => {
     const sql = 'SELECT * FROM Movies';
