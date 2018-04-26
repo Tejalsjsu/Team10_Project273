@@ -63,30 +63,33 @@ class Bills extends Component {
 
   componentDidMount() {
     console.log("Did mount called in bills");
-    this.props.latest10Bills();
+    this.props.latest10Bills(1);
     this.props.updatePageClick(BILLS);
   }
 
   getBillsByDate() {
     console.log("date string: " + this.state.dateString);
-    this.props.searchByDate(this.state.dateString);
+    this.props.searchByDate(this.state.dateString, 1);
   }
 
   getBillsByMonth() {
     console.log("month string: " + this.state.monthString);
-    this.props.searchByMonth(this.state.monthString);
+    this.props.searchByMonth(this.state.monthString, 1);
   }
 
-  handleChange(event, dateObj) {
-    console.log("date is: " + dateObj);
-    // let d = new Date(epoch_date);
-    // let date_in_string = d.getFullYear() + '-0' + (d.getMonth()+1) + '-' + d.getDate();
-    // let month_in_string = d.getMonth()+1;
-    // this.setState({
-    //   startDate: epoch_date,
-    //   dateString: date_in_string,
-    //   monthString: month_in_string
-    // });
+  handleChange(event, date_str) {
+    console.log("date is: " + date_str);
+    var epoch_date = new Date(date_str).getTime();
+    let dateObj = new Date(epoch_date);
+    let date_in_string = dateObj.getFullYear() + '-0' + (dateObj.getMonth()+1) + '-' + dateObj.getDate();
+    let month_in_string = dateObj.getMonth()+1;
+    console.log("date in string: " + date_in_string);
+    console.log("month in string: " + month_in_string);
+    this.setState({
+      startDate: dateObj,
+      dateString: date_in_string,
+      monthString: month_in_string
+    });
   }
 
   render() {
@@ -98,7 +101,7 @@ class Bills extends Component {
           <p style={{color: 'white'}}>Search by Date/Month</p>
           <div style={{color: 'white'}}>
               <DatePicker
-                onChange={(event, dateObj) => this.handleChange}
+                onChange={this.handleChange}
                 autoOk={this.state.autoOk}
                 floatingLabelText="Select Date"
                 defaultDate={this.state.startDate}
@@ -141,7 +144,7 @@ class Bills extends Component {
                        <td>
                           <span>
                                 <Link
-                                    to={`/admin-bill-info/${billInfo.BillingId}`}
+                                    to={`/purchase-details/${billInfo.BillingId}`}
                                     className="btn btn-link"
                                     key={billInfo.BillingId}
                                     style={{color: 'white'}}

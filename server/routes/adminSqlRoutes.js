@@ -4,49 +4,74 @@ var mysql = require('./mysql');
 
 // Latest 10 Bills
 router.get('/latest10Bills', function(req, res, next) {
+  console.log(req.query);
+  let userQuery = `select userId, userType, firstName from fandango.Users
+                   where userId = ${req.query.userId}`;
   let sqlQuery = `Select b.billingId, b.date, b.ticketCount, b.amount, b.tax,
-                  b.status, b.movieId, b.hallId, u.userId, u.firstName, u.lastName
+                  b.status, b.movieId, b.hallId, u.userId, u.userType, u.firstName, u.lastName
                   from fandango.Billing b inner join fandango.Users u
-                  on b.userId = u.userId order by date desc limit 10`;
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to fetch the list of bills"});
-    } else {
-      res.status(200).json({result: results});
-    }
-  }, sqlQuery);
+                  on b.userId = u.userId `;
+  let orderBy = ` order by date desc limit 10 `;
+  let andClause = ` AND u.userId = `;
+  mysql.fetchData(function(err, userResult) {
+     if(err) {
+       res.status(400).json({error: "failed to fetch user purchase history"});
+     } else if(userResult[0].userType === 2) {
+       sqlQuery = sqlQuery + orderBy;
+      } else {
+        andClause = andClause + `${req.query.userId} `;
+        sqlQuery = sqlQuery + andClause + orderBy;
+      }
+      mysql.fetchData(function(err, results) {
+         if(err) {
+           res.status(400).json({error: "Unable to fetch purchase history"});
+         } else {
+           res.status(200).json({result: results});
+         }
+       }, sqlQuery);
+  }, userQuery);
 });
 
 // Search on the basis of date or month
 router.get('/billSearch', function(req, res, next) {
   console.log(req.query);
-  let sqlQuery = undefined;
+  let userQuery = `select userId, userType, firstName from fandango.Users
+                   where userId = ${req.query.userId}`;
+  let sqlQuery = `Select b.billingId, b.date, b.amount, b.tax, b.ticketCount,
+                  b.movieId, u.userId, u.userType, u.firstName, u.lastName from
+                  fandango.Billing b inner join fandango.Users u
+                  on b.userId = u.userId WHERE `;
   if ("date" in req.query) {
-    sqlQuery = `Select b.billingId, b.date, b.amount, b.tax, b.ticketCount, b.movieId, u.userId,
-                u.firstName, u.lastName from fandango.Billing b inner join fandango.Users u
-                on b.userId = u.userId where b.date like "${req.query.date.concat("%")}"`;
+    sqlQuery = sqlQuery + ` b.date like "${req.query.date.concat("%")}" `;
   } else if("month" in req.query) {
-    sqlQuery = `Select b.billingId, b.date, b.amount, b.tax, b.ticketCount, b.movieId, u.userId,
-                u.firstName, u.lastName from fandango.Billing b inner join fandango.Users u
-                on b.userId = u.userId WHERE MONTH(date) = ${req.query.month}`;
+    sqlQuery = sqlQuery + ` MONTH(date) = ${req.query.month} `;
   } else {
     res.status(401).json({error: "invalid query"});
   }
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to fetch the list of bills"});
-    } else {
-      res.status(200).json({result: results});
-    }
-  }, sqlQuery);
+  mysql.fetchData(function(err, userResult) {
+     if(err) {
+       res.status(400).json({error: "failed to fetch user purchase history"});
+     } else if(userResult[0].userType !== 2) {
+       // if user is not admin then add userId to the where clause
+       sqlQuery = sqlQuery + ` AND u.userId = ${req.query.userId}`;
+      }
+      mysql.fetchData(function(err, results) {
+        if(err) {
+          res.status(400).json({error: "Unable to fetch purchase history"});
+        } else {
+          res.status(200).json({result: results});
+        }
+      }, sqlQuery);
+  }, userQuery);
 });
 
 // Bill Details
 router.get('/getBill', function(req, res, next) {
   console.log(req.query);
-  let sqlQuery = `Select b.billingId, u.firstName, u.lastName, m.title, m.photosUrl,
-                  m.seeItIn, mh.hallName, mh.city, mh.zipcode, b.amount,
-                  b.ticketCount, (b.amount * b.ticketCount) as totalAmount, b.date from
+  let sqlQuery = `Select b.billingId, u.userId, u.userType, u.firstName,
+                  u.lastName, m.title, m.photosUrl, m.seeItIn, mh.hallName,
+                  mh.city, mh.zipcode, b.amount, b.ticketCount,
+                  (b.amount * b.ticketCount) as totalAmount, b.date from
                   Billing b inner join Users u on b.userId = u.userId
                   inner join MovieHall mh on mh.hallId = b.hallId
                   inner join Movies m on m.movieId = b.movieId

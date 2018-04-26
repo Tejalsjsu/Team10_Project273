@@ -3,7 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 
 //Put your mysql configuration settings - user, password, database and port
-/*function getConnection() {
+function getConnection() {
     var connection = mysql.createConnection({
         host     : 'mysql.ca9j02g2avzs.us-west-1.rds.amazonaws.com',
         user     : 'root',
@@ -12,11 +12,11 @@ var mysql = require('mysql');
         port	   : 3306
     });
     return connection;
-}*/
+}
 
-function getConnection() {
+/*function getConnection() {
     var connectionPool = mysql.createPool({
-        connectionLimit : 500,
+        connectionLimit : 60,
         host     : 'mysql.ca9j02g2avzs.us-west-1.rds.amazonaws.com',
         user     : 'root',
         password : 'password123',
@@ -24,7 +24,7 @@ function getConnection() {
         port	   : 3306
     });
     return connectionPool;
-}
+}*/
 
 exports.fetchData = (callback, sqlQuery) => {
 
