@@ -1,5 +1,14 @@
 import axios from 'axios';
-import { BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS, MOVIE_CLICKS } from './adminTypes';
+import {
+          BILLS,
+          BILL_DETAILS,
+          REVENUE,
+          PAGE_CLICKS,
+          MOVIE_CLICKS,
+          TOP10_HALLS_WITH_MAX_REVENUE,
+          TOP10_MOVIE_REVENUES,
+          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE
+      } from './adminTypes';
 
 export const latest10Bills = () => async dispatch => {
   const res = await axios.get('/adminSqlRoutes/latest10Bills');
@@ -73,5 +82,25 @@ export const updateMovieClick = (movieObject) => async dispatch => {
 
 export const getMovieClicks = () => async dispatch => {
   const res = await axios.get('/graphs/getMovieClicks');
-  dispatch({ type: MOVIE_CLICKS, payload: res.data.results });
+  dispatch({ type: MOVIE_CLICKS, payload: res.data.result });
+};
+
+export const getTop10HallsWithMaxRevenue = () => async dispatch => {
+  const res = await axios.get('/adminSqlRoutes/top10HallsWithMaxRevenue');
+  dispatch({ type: TOP10_HALLS_WITH_MAX_REVENUE, payload: res.data.result });
+};
+
+export const getTop10MovieRevenues = () => async dispatch => {
+  const res = await axios.get('/adminSqlRoutes/top10MovieRevenues');
+  dispatch({ type: TOP10_MOVIE_REVENUES, payload: res.data.result });
+};
+
+export const getCityWiseRevenuePerYearForMovie = (movieId) => async dispatch => {
+  const res = await axios.get('/adminSqlRoutes/cityWiseRevenuePerYearForMovie',
+                              {params:
+                                  {
+                                    movieId: movieId
+                                  }
+                              });
+  dispatch({ type: CITYWISE_REVENUE_PERYEAR_FOR_MOVIE, payload: res.data.result });
 };

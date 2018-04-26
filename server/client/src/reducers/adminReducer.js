@@ -1,11 +1,23 @@
-import {BILLS, BILL_DETAILS, REVENUE, PAGE_CLICKS, MOVIE_CLICKS} from '../actions/adminTypes';
+import {
+          BILLS,
+          BILL_DETAILS,
+          REVENUE,
+          PAGE_CLICKS,
+          MOVIE_CLICKS,
+          TOP10_HALLS_WITH_MAX_REVENUE,
+          TOP10_MOVIE_REVENUES,
+          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE
+      } from '../actions/adminTypes';
 
 const initialState = {
     bills: [],
     billDetails: {},
     revenue: {},
     pageClicks: {},
-    movieClicks: []
+    movieClicks: [],
+    top10_halls_with_max_revenue: [],
+    top10_movie_revenues: [],
+    citywise_revenue_peryear_for_movie: []
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -42,6 +54,27 @@ const adminReducer = (state = initialState, action) => {
         state={
           ...state,
           movieClicks: action.payload
+        };
+    break;
+
+    case TOP10_HALLS_WITH_MAX_REVENUE:
+        state={
+          ...state,
+          top10_halls_with_max_revenue: action.payload
+        };
+    break;
+
+    case TOP10_MOVIE_REVENUES:
+        state={
+          ...state,
+          top10_movie_revenues: action.payload
+        };
+    break;
+
+    case CITYWISE_REVENUE_PERYEAR_FOR_MOVIE:
+        state={
+          ...state,
+          citywise_revenue_peryear_for_movie: action.payload
         };
     break;
 
