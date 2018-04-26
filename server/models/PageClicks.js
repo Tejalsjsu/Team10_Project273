@@ -14,6 +14,10 @@ let pageClickSchema = new Schema({
       type: Number,
       default: 0
     },
+    Landing: {
+      type: Number,
+      default: 0
+    },
     Dashboard: {
       type: Number,
       default: 0

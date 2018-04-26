@@ -3,39 +3,28 @@ var router = express.Router();
 var mysql = require('mysql');
 
 //Put your mysql configuration settings - user, password, database and port
-/*function getConnection(){
+/*function getConnection() {
     var connection = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'krutika',
-        password : 'krutika@123',
-        database : 'project-273',
-        port	 : 3306
+        host     : 'mysql.ca9j02g2avzs.us-west-1.rds.amazonaws.com',
+        user     : 'root',
+        password : 'password123',
+        database : 'fandango',
+        port	   : 3306
     });
     return connection;
 }*/
-function getConnection(){
+
+function getConnection() {
     var connectionPool = mysql.createPool({
         connectionLimit : 500,
-        host     : 'localhost',
+        host     : 'mysql.ca9j02g2avzs.us-west-1.rds.amazonaws.com',
         user     : 'root',
-        password : 'admin',
+        password : 'password123',
         database : 'fandango',
-        port	 : 3306
+        port	   : 3306
     });
     return connectionPool;
 }
-
-// function getConnection(){
-//     var connectionPool = mysql.createPool({
-//         connectionLimit : 500,
-//         host     : 'localhost',
-//         user     : 'krutika',
-//         password : 'krutika@123',
-//         database : 'project-273',
-//         port	 : 3306
-//     });
-//     return connectionPool;
-// }
 
 exports.fetchData = (callback, sqlQuery) => {
 
@@ -53,8 +42,10 @@ exports.fetchData = (callback, sqlQuery) => {
 
         }
         callback(err, rows);
+        // connection.release();
         connection.end();
     });
+    // console.log("\nConnection released..");
     console.log("\nConnection closed..");
 }
 
@@ -69,7 +60,9 @@ exports.insertData = (callback, sqlQuery) => {
         console.log("The inserted id is: " + result.insertId);
         callback(err, result);
       }
+      // connection.release();
       connection.end();
     });
+    // console.log("\nConnection released..");
     console.log("\nConnection closed..");
 }

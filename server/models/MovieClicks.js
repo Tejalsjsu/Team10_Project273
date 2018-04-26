@@ -6,7 +6,7 @@ const movieClicksSchema = new Schema({
     type: Number,
     required: true
   },
-  movieName: {
+  title: {
     type: String,
     required: true
   },

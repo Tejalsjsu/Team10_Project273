@@ -6,7 +6,8 @@ import {
           MOVIE_CLICKS,
           TOP10_HALLS_WITH_MAX_REVENUE,
           TOP10_MOVIE_REVENUES,
-          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE
+          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE,
+          REVIEWS_ON_MOVIES
       } from '../actions/adminTypes';
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
     movieClicks: [],
     top10_halls_with_max_revenue: [],
     top10_movie_revenues: [],
-    citywise_revenue_peryear_for_movie: []
+    citywise_revenue_peryear_for_movie: [],
+    reviewsOnMovies: []
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -75,6 +77,13 @@ const adminReducer = (state = initialState, action) => {
         state={
           ...state,
           citywise_revenue_peryear_for_movie: action.payload
+        };
+    break;
+
+    case REVIEWS_ON_MOVIES:
+        state={
+          ...state,
+          reviewsOnMovies: action.payload
         };
     break;
 

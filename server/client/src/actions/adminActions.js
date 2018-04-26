@@ -7,7 +7,8 @@ import {
           MOVIE_CLICKS,
           TOP10_HALLS_WITH_MAX_REVENUE,
           TOP10_MOVIE_REVENUES,
-          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE
+          CITYWISE_REVENUE_PERYEAR_FOR_MOVIE,
+          REVIEWS_ON_MOVIES
       } from './adminTypes';
 
 export const latest10Bills = () => async dispatch => {
@@ -103,4 +104,9 @@ export const getCityWiseRevenuePerYearForMovie = (movieId) => async dispatch => 
                                   }
                               });
   dispatch({ type: CITYWISE_REVENUE_PERYEAR_FOR_MOVIE, payload: res.data.result });
+};
+
+export const getReviewsOnMovies = () => async dispatch => {
+  const res = await axios.get('/adminSqlRoutes/reviewsOnMovies');
+  dispatch({ type: REVIEWS_ON_MOVIES, payload: res.data.result });
 };
