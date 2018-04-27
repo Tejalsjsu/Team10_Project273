@@ -55,9 +55,12 @@ if (cluster.isMaster) {
   var userRoutes = require('./routes/userRoutes');
   app.use('/userRoutes', userRoutes);
   var movies = require('./routes/movies');
-    app.use('/movies', movies);
+  app.use('/movies', movies);
   var booking = require('./routes/booking');
-    app.use('/booking', booking);
+  app.use('/booking', booking);
+  var revenueRoutes = require('./routes/revenueRoutes');
+  app.use('/revenues', revenueRoutes);
+
 
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets

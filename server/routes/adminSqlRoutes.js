@@ -85,36 +85,6 @@ router.get('/getBill', function(req, res, next) {
   }, sqlQuery);
 });
 
-// Revenue by Movie
-router.get('/getRevenueByMovie', function(req, res, next) {
-  console.log(req.query);
-  let sqlQuery = `Select m.title, sum(b.amount * b.ticketCount) as totalRevenue
-                  from Billing b inner join Movies m on m.movieId = b.movieId
-                  where b.movieId=${req.query.movieId} and b.status="booked" group by m.title`;
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to get revenue by movie"});
-    } else {
-      res.status(200).json({result: results[0]});
-    }
-  }, sqlQuery);
-});
-
-// Revenue by Hall
-router.get('/getRevenueByHall', function(req, res, next) {
-  console.log(req.query);
-  let sqlQuery = `Select mh.hallName, sum(b.amount * b.ticketCount) as totalRevenue
-                  from Billing b inner join MovieHall mh on mh.hallId = b.hallId
-                  where mh.hallId=${req.query.hallId} and b.status="booked" group by mh.hallName`;
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to get revenue by movie"});
-    } else {
-      res.status(200).json({result: results[0]});
-    }
-  }, sqlQuery);
-});
-
 // 10 halls who sold maximum number of tickets last month with its revenue
 router.get('/top10HallsWithMaxRevenue', function(req, res, next) {
   let sqlQuery = `Select mh.hallId, mh.hallName, sum(b.ticketCount) as totalTickets,
