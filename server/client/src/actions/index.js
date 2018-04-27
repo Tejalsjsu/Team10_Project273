@@ -26,7 +26,7 @@ export const submitNewMovie = (values, file) => async dispatch => {
 };
 
 export const fetchMovies = () => async dispatch => {
-  const res = await axios.get('/api/getMovies');
+  const res = await axios.get('/api/movies');
 
   dispatch({ type: FETCH_MOVIES, payload: res.data });
 };

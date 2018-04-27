@@ -7,7 +7,8 @@ if (cluster.isMaster) {
   cluster.fork();
 } else {
   //child mode, act like a server
-
+  // Connect to mongoDB
+  let mongoConnect = require('./models/mongooseConnection');
   const express = require('express');
   const mongoose = require('mongoose');
   const bodyParser = require('body-parser');
@@ -17,7 +18,7 @@ if (cluster.isMaster) {
   require('./models/User');
   require('./models/Movie');
   require('./services/passport');
-  require('./services/cache');
+
   const options = {
     autoIndex: false, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
@@ -45,6 +46,18 @@ if (cluster.isMaster) {
   require('./routes/uploadRoutes')(app);
   require('./routes/publicRoutes')(app);
   require('./routes/billingRoutes')(app);
+  var admin = require('./routes/admin');
+  app.use('/admin',admin);
+  var adminGraphRoutes = require('./routes/adminGraphRoutes');
+  app.use('/graphs', adminGraphRoutes);
+  var adminSqlRoutes = require('./routes/adminSqlRoutes');
+  app.use('/adminSqlRoutes', adminSqlRoutes);
+  var userRoutes = require('./routes/userRoutes');
+  app.use('/userRoutes', userRoutes);
+  var movies = require('./routes/movies');
+    app.use('/movies', movies);
+  var booking = require('./routes/booking');
+    app.use('/booking', booking);
 
   if (process.env.NODE_ENV === 'production') {
     //Express will serve up production assets

@@ -1,335 +1,334 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-
-import { adminData } from '../../reducers/adminReducer';
+import React from "react";
+import {bindActionCreators} from 'redux'
+import { NavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import * as getData from '../../actions/adminActions';
-//import PieChart from 'react-simple-pie-chart';
-//import BarChart from 'react-bar-chart';
-// import {BarChart} from 'react-easy-chart';
-// import {PieChart} from 'react-easy-chart';
-
-//import {Link} from 'react-router-dom';
+import {adminData} from "../../reducers/adminReducer";
+import {AreaChart, Area, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Legend} from 'recharts';
 
 class Admin extends React.Component {
-  /*constructor(props){
-            super(props);
-            this.state = {
-                redirect: false,
-				nScreens:0
-            };
-		/!*this.add = this.add.bind(this);
-		this.search = this.search.bind(this);
-		this.update = this.update.bind(this);*!/
-    }*/
+    constructor(props){
+        super(props);
+        this.state = {
+            dMessage: "",
+            uMessage: ""
+        };
+    };
+    componentWillMount(){
+        this.props.getTop10MovieRevenues().then(
+            (data) => {
+                console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
+                this.setState({
+                    top10_movie_revenues: this.props.adminData.data.top10_movie_revenues
+                });
+            },
+            (err) => {
+                console.log("inside err");
+            });
 
-  state = {
-    redirect: false,
-    nScreens: 0
-  };
+        this.props.getCityWiseRevenuePerYearForMovie(1).then(
+            (data) => {
+                console.log("after getCityWiseRevenuePerYearForMovie",this.props.adminData.data.citywise_revenue_peryear_for_movie);
+                this.setState({
+                    citywise_revenue_peryear_for_movie: this.props.adminData.data.citywise_revenue_peryear_for_movie
+                });
+            },
+            (err) => {
+                console.log("inside err");
+            });
 
-  add() {
-    console.log('Add Movie Hall inside admin.js');
+        this.props.getTop10HallsWithMaxRevenue().then(
+            (data) => {
+                console.log("after getTop10HallsWithMaxRevenue",this.props.adminData.data.top10_halls_with_max_revenue);
+                this.setState({
+                    top10_halls_with_max_revenue: this.props.adminData.data.top10_halls_with_max_revenue
+                });
+            },
+            (err) => {
+                console.log("inside err");
+            });
 
-    console.log('props', this.props);
-    console.log('state', this.state);
-    this.props.addMovieHall(this.state).then(
-      data => {
-        this.setState({
-          aMessage: this.props.adminData.data.message
-        });
-      },
-      err => {
-        console.log('inside err');
-      }
-    );
-  }
+        this.props.getPageClicks().then(
+            (data) => {
+                console.log("after getPageClicks",this.props.adminData.data.pageClicks);
+                var pageClicksArray = [];
+                var obj = {pageName : "Login", clicks : this.props.adminData.data.pageClicks.Login}
+                pageClicksArray[0] = obj;
+                obj = {pageName : "Signup", clicks : this.props.adminData.data.pageClicks.Signup}
+                pageClicksArray[1] = obj;
+                obj = {pageName : "Home", clicks : this.props.adminData.data.pageClicks.Home}
+                pageClicksArray[2] = obj;
+                obj = {pageName : "Landing", clicks : this.props.adminData.data.pageClicks.Landing}
+                pageClicksArray[3] = obj;
+                obj = {pageName : "Dashboard", clicks : this.props.adminData.data.pageClicks.Dashboard}
+                pageClicksArray[4] = obj;
+                obj = {pageName : "MovieDetails", clicks : this.props.adminData.data.pageClicks.MovieDetails}
+                pageClicksArray[5] = obj;
+                obj = {pageName : "Bills", clicks : this.props.adminData.data.pageClicks.Bills}
+                pageClicksArray[6] = obj;
+                obj = {pageName : "BillDetails", clicks : this.props.adminData.data.pageClicks.BillDetails}
+                pageClicksArray[7] = obj;
 
-  search() {
-    console.log('Search Movie Hall inside admin.js', this.state.hallName);
-    this.props.searchMovieHall(this.state.hallName).then(
-      data => {
-        console.log(
-          'inside searchMovieHall',
-          this.props.adminData.data.hallData
+                this.setState({
+                    pageClicksArray: pageClicksArray
+                });
+                console.log("this.props.adminData.data.pageClicks",this.state.pageClicksArray);
+            },
+            (err) => {
+                console.log("inside err");
+            });
+
+        this.props.getMovieClicks().then(
+            (data) => {
+                console.log("after getMovieClicks",this.props.adminData.data.movieClicks);
+                this.setState({
+                    movieClicks: this.props.adminData.data.movieClicks
+                });
+                console.log("this.props.adminData.data.movieClicks",this.state.movieClicks);
+            },
+            (err) => {
+                console.log("inside err");
+            });
+
+        this.props.getReviewsOnMovies(this.state).then(
+            (data) => {
+                console.log("after getReviewsOnMovies",this.props.adminData.data.reviewsOnMovies);
+                var reviewData = this.props.adminData.data.reviewsOnMovies;
+                var reviewArray = [];
+                for(var i=0; i<reviewData.length; i++){
+                    var obj = {name:reviewData[i].title,value:reviewData[i].avgRating}
+                    reviewArray.push(obj);
+                }
+                console.log("reviews-------------------",reviewArray);
+                //var revM = [{name:"A quite place",value:3.4},{name:"Deadpool",value:4},{name:"JP",value:2.2}];
+                this.setState({
+                    reviewsOnMovies: reviewArray
+                });
+                console.log("reviewsOnMovies",this.state.reviewsOnMovies);
+            },
+            (err) => {
+                console.log("inside err");
+            });
+
+        /*this.props.getTop10MovieRevenues(this.state).then(
+            (data) => {
+                console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
+                this.setState({
+                    top10_movie_revenues: this.props.adminData.data.top10_movie_revenues
+                });
+                console.log("this.props.adminData.data.top10_movie_revenues",this.state.top10_movie_revenues);
+            },
+            (err) => {
+                console.log("inside err");
+            });
+
+        this.props.getTop10MovieRevenues(this.state).then(
+            (data) => {
+                console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
+                this.setState({
+                    top10_movie_revenues: this.props.adminData.data.top10_movie_revenues
+                });
+                console.log("this.props.adminData.data.top10_movie_revenues",this.state.top10_movie_revenues);
+            },
+            (err) => {
+                console.log("inside err");
+            });*/
+    }
+
+    render(){
+        const data = [
+            {text: 'Man', value: 300},
+            {text: 'Woman', value: 100},
+            {text: 'ChildMan', value: 50},
+            {text: 'ChildWoman', value: 75}
+        ];
+        const margin = {top: 20, right: 20, bottom: 30, left: 40};
+
+        const data01 = [{name: 'Group A', value: 400}, {name: 'Group B', value: 300},
+            {name: 'Group C', value: 300}, {name: 'Group D', value: 200}]
+
+        const data02 = [{name: 'A1', value: 100},
+            {name: 'A2', value: 300},
+            {name: 'B1', value: 100},
+            {name: 'B2', value: 80},
+            {name: 'B3', value: 40},
+            {name: 'B4', value: 30},
+            {name: 'B5', value: 50},
+            {name: 'C1', value: 100},
+            {name: 'C2', value: 200},
+            {name: 'D1', value: 150},
+            {name: 'D2', value: 50}]
+
+
+        const dataForBar = [
+            {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+            {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+            {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+            {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+            {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+            {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+            {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+            {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+            {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+            {name: 'Page E', uv: 1890, pv: 4800, amt: 2181}
+        ];
+
+        const dataForLine = [
+            {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+            {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+            {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+            {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+            {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+            {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
+            {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+        ];
+
+        const dataForBar1 = [
+            {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
+            {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
+            {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
+            {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
+            {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
+            {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
+            {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+        ];
+
+        console.log("state : ",this.state);
+        return(
+            <div>
+                <div className="page-header-container">
+                    <div className="row">
+                        <nav className="page-navigation">
+                            <ul className="page-navigation-list">
+                                <li><NavLink className="page-navigation-link" to="/User/EditProfile"> Upload Movie </NavLink> </li>
+                            </ul>
+                            <ul className="page-navigation-list">
+                                <li><NavLink className="page-navigation-link" to="">  Edit Movie Hall </NavLink> </li>
+                            </ul>
+                            <ul className="page-navigation-list">
+                                <li><NavLink className="page-navigation-link" to="">  Edit Movie Hall </NavLink> </li>
+                            </ul>
+                            <ul className="page-navigation-list">
+                                <li><NavLink className="page-navigation-link" to="">  Purchase History </NavLink> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div className="row">
+
+                    {/*Retrieve data from database and show first 10 movies with its revenue/year*/}
+                    <div className="col-sm-4">
+                        Top 10 movies with its revenue/year - 2018
+                        <br/><br/>
+                        <BarChart width={400} height={200} data={this.state.top10_movie_revenues}
+                                  margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="title"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend />
+                            <Bar dataKey="totalRevenue" fill="#FFA500" />
+                        </BarChart>
+                    </div>
+
+                    <div className="col-sm-4">
+                        City wise revenue/year - 2018
+                        <br/><br/>
+                        <BarChart width={300} height={200} data={this.state.citywise_revenue_peryear_for_movie}
+                                  margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="city"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend />
+                            <Bar dataKey="totalRevenue" fill="#8884d8" />
+                        </BarChart>
+                    </div>
+
+                    <div className="col-sm-4">
+                        Top 10 halls with maximum revenue/year
+                        <br/><br/>
+                        <LineChart width={500} height={300} data={this.state.top10_halls_with_max_revenue}
+                                   margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                            <XAxis dataKey="hallName"/>
+                            <YAxis/>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <Tooltip/>
+                            <Legend />
+                            <Line type="monotone" dataKey="totalRevenue" stroke="#8884d8" activeDot={{r: 8}}/>
+                        </LineChart>
+                    </div>
+                </div>
+                <hr/>
+                <div className="row">
+                    <div className="col-sm-3">
+                        <div className="row">
+                            Reviews for Movies
+                            <br/><br/>
+                            <PieChart width={800} height={500}>
+                                <Pie data={this.state.reviewsOnMovies} cx={150} cy={150} innerRadius={50} outerRadius={90} fill="#82ca9d" label/>
+                            </PieChart>
+                            <br/>
+                        </div>
+                        <div className="row">
+                            {this.state.reviewsOnMovies && this.state.reviewsOnMovies.map((reviews,i) =>
+                                <h5 key={i}>
+                                    <div className="col-md-2">{reviews.name} : {reviews.value}</div>
+                                </h5>)}
+                        </div>
+                    </div>
+
+                    <div className="col-sm-3">
+                        Top 10 movies with its revenue/year
+                        <br/><br/>
+                        {/*<PieChart width={500} height={400}>
+                            <Pie data={data01} cx={100} cy={100} outerRadius={40} fill="#8884d8"/>
+                            <Pie data={data02} cx={100} cy={100} innerRadius={60} outerRadius={70} fill="#82ca9d" label/>
+                        </PieChart>*/}
+                    </div>
+
+                    {/*area chart for pages seen*/}
+
+                    <div className="col-sm-3">
+                        Top 10 movies with its revenue/year
+                        <br/><br/>
+                        {/*<PieChart width={500} height={400}>
+                            <Pie data={data01} cx={100} cy={100} outerRadius={40} fill="#8884d8"/>
+                            <Pie data={data02} cx={100} cy={100} innerRadius={60} outerRadius={70} fill="#82ca9d" label/>
+                        </PieChart>*/}
+                    </div>
+
+                </div>
+                <hr/>
+                <div className="row">
+                    <div className="col-sm-3">
+                        Area wise graph
+                        <br/><br/>
+                        <AreaChart width={800} height={300} data={this.state.pageClicksArray}
+                                   margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="pageName"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Area type='monotone' dataKey='clicks' stackId="1" stroke='#F4A460' fill='#F4A460' />
+                        </AreaChart>
+                    </div>
+                </div>
+            </div>
         );
-        this.setState({
-          hall_id: this.props.adminData.data.hallData.hall_id,
-          hallName: this.props.adminData.data.hallData.hallName,
-          movie_times: this.props.adminData.data.hallData.movie_times,
-          nScreens: this.props.adminData.data.hallData.nScreens,
-          nTickets: this.props.adminData.data.hallData.nTickets,
-          tPrice: this.props.adminData.data.hallData.tPrice,
-          movieTimesBfr: this.props.adminData.data.hallData.movie_times
-        });
-
-        var str = this.props.adminData.data.hallData.movie_times;
-        var splitted = str.split('|');
-
-        for (var i = 0; i < splitted.length; i++) {
-          if (splitted[i] == '9-11') {
-            console.log('in 9-11');
-            document.getElementById('chk1').checked = true;
-          }
-          if (splitted[i] == '11-2') {
-            console.log('in 9-11');
-            document.getElementById('chk2').checked = true;
-          }
-          if (splitted[i] == '2-4') {
-            console.log('in 9-11');
-            document.getElementById('chk3').checked = true;
-          }
-        }
-      },
-      err => {
-        console.log('inside err');
-      }
-    );
-  }
-
-  update() {
-    if (document.getElementById('chk1').checked == true) {
-      console.log('inside 1');
-      this.setState({ t1: '9-11' });
     }
-    if (document.getElementById('chk2').checked == true) {
-      console.log('inside 2');
-      this.setState({
-        t2: '11-2'
-      });
-    }
-    if (document.getElementById('chk3').checked == true) {
-      console.log('inside 3');
-      this.setState({ t3: '2-4' });
-    }
-    console.log('Update Movie Hall inside admin.js before update', this.state);
-
-    this.props.updateMovieHall(this.state).then(
-      data => {
-        console.log(
-          'inside update after updated data',
-          this.props.adminData.data
-        );
-        this.setState({
-          hall_id: this.props.adminData.data.hallData.hall_id,
-          hallName: this.props.adminData.data.hallData.hallName,
-          movie_times: this.props.adminData.data.hallData.movie_times,
-          nScreens: this.props.adminData.data.hallData.nScreens,
-          nTickets: this.props.adminData.data.hallData.nTickets,
-          tPrice: this.props.adminData.data.hallData.tPrice,
-          uMessage: this.props.adminData.data.hallData.message
-        });
-
-        var str = this.props.adminData.data.hallData.movie_times;
-        var splitted = str.split('|');
-
-        for (var i = 0; i < splitted.length; i++) {
-          if (splitted[i] == '9-11') {
-            console.log('in 9-11');
-            document.getElementById('chk1').checked = true;
-          }
-          if (splitted[i] == '11-2') {
-            console.log('in 9-11');
-            document.getElementById('chk2').checked = true;
-          }
-          if (splitted[i] == '2-4') {
-            console.log('in 9-11');
-            document.getElementById('chk3').checked = true;
-          }
-        }
-      },
-      err => {
-        console.log('inside err');
-      }
-    );
-  }
-
-  render() {
-    const { adminData } = this.props;
-    console.log('varshaData inside render ', this.props.varshaData);
-
-    var crDr = {};
-    var crDrlist = [];
-    crDr = { color: '#008080', value: 0 };
-    crDrlist.push(crDr);
-    crDr = { color: '#808000', value: 0 };
-    crDrlist[1] = crDr;
-
-    crDrlist[0].value = 12;
-    crDrlist[1].value = 15;
-
-    const data = [{ text: 'Man', value: 500 }, { text: 'Woman', value: 300 }];
-
-    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
-    return (
-      <div>
-        Add Movie Hall
-        <br />
-        <br />
-        <br />
-        Name :{' '}
-        <input
-          type="text"
-          name="hallName"
-          onChange={e => {
-            this.setState({ hallName: e.target.value });
-          }}
-        />
-        <br />
-        <input
-          type="checkbox"
-          name="chk1"
-          onChange={e => {
-            this.setState({ t1: '9-11' });
-          }}
-        />9-11<br />
-        <input
-          type="checkbox"
-          name="chk2"
-          onChange={e => {
-            this.setState({ t2: '11-2' });
-          }}
-        />11-2<br />
-        <input
-          type="checkbox"
-          name="chk3"
-          onChange={e => {
-            this.setState({ t3: '2-4' });
-          }}
-        />2-4<br />
-        Number of Tickets :{' '}
-        <input
-          type="text"
-          onChange={e => {
-            this.setState({ nTickets: e.target.value });
-          }}
-        />
-        <br />
-        Number of screens :{' '}
-        <input
-          type="text"
-          onChange={e => {
-            this.setState({ nScreens: e.target.value });
-          }}
-          max="10"
-          min="1"
-        />
-        <br />
-        Ticket Price :{' '}
-        <input
-          type="text"
-          onChange={e => {
-            this.setState({ tPrice: e.target.value });
-          }}
-        />
-        <br />
-        <button onClick={this.add.bind(this)}>Add Hall</button>
-        <br />
-        <br />
-        {this.state.aMessage ? this.state.aMessage : ''}
-        <br />
-        <br />
-        pie chart Search Movie Hall
-        <hr />
-        <br />
-        <br />
-        <input
-          type="text"
-          name="searchHall"
-          onChange={e => {
-            this.setState({ hallName: e.target.value });
-          }}
-        />
-        <button onClick={this.search.bind(this)}>Search</button>
-        <br />
-        <br />
-        Name :{' '}
-        <input
-          type="text"
-          name="hallName"
-          value={this.state.hallName}
-          onChange={e => {
-            this.setState({ hallName: e.target.value });
-          }}
-        />
-        <br />
-        <input type="checkbox" name="chk1" id="chk1" />9-11<br />
-        <input type="checkbox" name="chk2" id="chk2" />11-2<br />
-        <input type="checkbox" name="chk3" id="chk3" />2-4<br />
-        Number of Tickets :{' '}
-        <input
-          type="text"
-          value={this.state.nTickets}
-          onChange={e => {
-            this.setState({ nTickets: e.target.value });
-          }}
-        />
-        <br />
-        Number of screens :{' '}
-        <input
-          type="text"
-          value={this.state.nScreens}
-          onChange={e => {
-            this.setState({ nScreens: e.target.value });
-          }}
-          max="10"
-          min="1"
-        />
-        <br />
-        Ticket Price :{' '}
-        <input
-          type="text"
-          value={this.state.tPrice}
-          onChange={e => {
-            this.setState({ tPrice: e.target.value });
-          }}
-        />
-        <br />
-        <button onClick={this.update.bind(this)}>Update Hall</button>
-        <br />
-        <br />
-        {this.state.uMessage ? this.state.uMessage : ''}
-      </div>
-    );
-  }
 }
 
-function mapStateToProps(state) {
-  return {
-    adminData: state.admin
-  };
+function mapStateToProps(state){
+    return{
+        adminData : state.admin
+    };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, getData), dispatch);
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Admin);
+function mapDispatchToProps(dispatch){
+    return bindActionCreators(Object.assign({}, getData), dispatch)
 
-// <PieChart
-//   data={[
-//     { key: 'A', value: 100 },
-//     { key: 'B', value: 200 },
-//     { key: 'C', value: 50 }
-//   ]}
-// />
-// <BarChart
-//   data={[
-//     { x: 'A', y: 20 },
-//     { x: 'B', y: 30 },
-//     { x: 'C', y: 40 },
-//     { x: 'D', y: 20 },
-//     { x: 'E', y: 40 },
-//     { x: 'F', y: 25 },
-//     { x: 'G', y: 5 }
-//   ]}
-// />
-// <PieChart
-//   size={400}
-//   innerHoleSize={200}
-//   data={[
-//     { key: 'A', value: 100, color: '#aaac84' },
-//     { key: 'B', value: 200, color: '#dce7c5' },
-//     { key: 'C', value: 50, color: '#e3a51a' }
-//   ]}
-// />
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Admin);

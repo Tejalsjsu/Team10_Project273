@@ -28,7 +28,7 @@ body {
 
 .right {
     bottom: 0;
-    color: ##fff;
+    color: #fff;
     font-size: 14px;
     position: absolute;
     right: 10px;
@@ -201,7 +201,7 @@ width: 100%;
 }
 
 .login-img{
-  width: 350px;
+  width: 290px;
   height: 70px;
   padding-bottom: 10px;
 }
@@ -254,4 +254,15 @@ width: 100%;
 
 a:hover {
     color: white;
+}
+.header-border{
+    border-bottom: 3px solid #F15500;
+}
+h1{
+    color:white;
+    font-weight:700;
+}
+
+.hgt{
+    display: block;
 }

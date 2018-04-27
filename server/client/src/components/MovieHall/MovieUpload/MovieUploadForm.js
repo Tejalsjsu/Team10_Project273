@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { submitNewMovie } from '../../../actions';
@@ -72,6 +73,10 @@ class MovieUploadForm extends Component {
       </form>
     );
   }
+}
+function validate(values) {
+  const errors = {};
+  return errors;
 }
 
 export default connect(null, { submitNewMovie })(withRouter(MovieUploadForm));
