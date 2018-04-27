@@ -1,0 +1,144 @@
+.movie-checkout-container {
+  width: 320px;
+  float: left;
+}
+div {
+  display: block;
+}
+*,
+:after,
+:before {
+  -webkit-box-sizing: border-box;
+}
+body {
+  overflow: auto;
+  height: 100%;
+  background-color: #fff;
+  /* color: #4c4c4c; */
+  font-size: 14px;
+  font-family: proxima-nova, Helvetica, Arial, sans-serif;
+}
+.font-sans-serif-alt {
+  font-family: proxima-nova, Helvetica, Arial, sans-serif;
+}
+.movie-details {
+  width: 100%;
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 1px;
+}
+.movie-details-img {
+  height: 250px;
+  width: 164px;
+}
+.visual-thumb {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.movie-detail-details {
+  background-color: #262626;
+  min-height: 250px;
+  margin: 0;
+  font-size: 0.929em;
+  line-height: 1.4;
+  padding: 15px 0;
+  font-family: 'Times New Roman';
+  font-style: italic;
+  text-align: center;
+}
+/*Location Css*/
+.theaters {
+  margin-bottom: 15px;
+  width: auto;
+  margin-left: 320px;
+  padding: 0 0.5rem;
+}
+.theater-wrap {
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.theater-showtimes-variant {
+  padding: 15px 20px 15px 15px;
+  background-color: #ebebeb;
+}
+.theater-showtimes-variant-last-li {
+  border-bottom: 1px solid #ccc;
+}
+.theater-btn-list-item {
+  display: inline-block;
+}
+.showtime-btn {
+  width: 89px;
+  padding: 13px 0;
+  margin: 2px;
+  text-align: center;
+}
+/*Theatre Location Header*/
+.theater-name {
+  display: inline-block;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+.font-lg {
+  font-size: 28px;
+}
+.font-300 {
+  font-weight: 300;
+}
+.font-lg {
+  line-height: 1em;
+}
+h3 {
+  margin: 0;
+}
+.font-sans-serif {
+  font-family: alternate-gothic-no-1-d, 'Futura Condensed', 'Arial Narrow',
+    Arial, sans-serif;
+}
+.theater-header {
+  background: #262626;
+  color: white;
+  padding: 10px;
+}
+.theater-name-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.theater-address-wrap {
+  display: inline-block;
+  margin-right: 10px;
+  color: #929292;
+}
+
+.movie-detail-mop-link {
+  display: block;
+  float: left;
+  overflow: hidden;
+}
+
+a:-webkit-any-link {
+  cursor: pointer;
+}
+
+.theater-tick-headline {
+  margin-bottom: 15px;
+  color: #929292;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 22px;
+  display: inline-block;
+}

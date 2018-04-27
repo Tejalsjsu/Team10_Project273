@@ -1,0 +1,34 @@
+.row > div {
+  vertical-align: top;
+}
+/*Checkout page*/
+.main {
+  padding-top: 0;
+  width: 620px;
+  display: inline-block;
+  margin: 0 15px 0 0;
+  vertical-align: top;
+  position: inherit;
+}
+.main:after {
+  content: '';
+  clear: both;
+  height: 1px;
+  width: 1px;
+  display: block;
+}
+.module-standard {
+  margin-bottom: 20px;
+  position: relative;
+  background: #fff;
+  padding: 20px 20px 20px 20px;
+  border: 1px solid #ccc;
+}
+.row {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 91.429em;
+}
