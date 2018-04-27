@@ -3,8 +3,6 @@ import {Link, withRouter} from 'react-router-dom';
 import {latest10Bills, searchByDate, searchByMonth, updatePageClick} from "../../actions/adminActions";
 import {BILLS} from '../../actions/pageClickEnums';
 import {connect} from "react-redux";
-// import DatePicker from 'react-datepicker';
-// import './datePicker.css';
 import moment from 'moment';
 import Moment from 'react-moment';
 import DatePicker from 'material-ui/DatePicker';
@@ -37,8 +35,7 @@ import {
 
 const optionsStyle = {
   maxWidth: 255,
-  marginRight: 'auto',
-  color: 'white'
+  marginRight: 'auto'
 };
 
 class Bills extends Component {
@@ -49,6 +46,7 @@ class Bills extends Component {
       let date_str = d.getFullYear() + '-0' + (d.getMonth()+1) + '-' + d.getDate();
       let month_str = d.getMonth()+1;
       this.state = {
+        userId: this.props.match.params.userId,
         bills: [],
         startDate: new Date(),
         dateString: date_str,
@@ -61,22 +59,20 @@ class Bills extends Component {
       this.getBillsByDate = this.getBillsByDate.bind(this);
   }
 
-  componentWillReceiveProps(){}
-
   componentDidMount() {
-    console.log("Did mount called in bills");
-    this.props.latest10Bills(1);
+    console.log("Did mount called in bills: " + this.state.userId);
+    this.props.latest10Bills(this.state.userId);
     this.props.updatePageClick(BILLS);
   }
 
   getBillsByDate() {
     console.log("date string: " + this.state.dateString);
-    this.props.searchByDate(this.state.dateString, 1);
+    this.props.searchByDate(this.state.dateString, this.state.userId);
   }
 
   getBillsByMonth() {
     console.log("month string: " + this.state.monthString);
-    this.props.searchByMonth(this.state.monthString, 1);
+    this.props.searchByMonth(this.state.monthString, this.state.userId);
   }
 
   handleChange(event, date_str) {
@@ -100,8 +96,8 @@ class Bills extends Component {
       <MuiThemeProvider>
         <div className="container-fluid">
           <br/><br/>
-          <p style={{color: 'white'}}>Search by Date/Month</p>
-          <div style={{color: 'white'}}>
+          <p>Search by Date/Month</p>
+          <div>
               <DatePicker
                 onChange={this.handleChange}
                 autoOk={this.state.autoOk}
@@ -119,7 +115,7 @@ class Bills extends Component {
           </Button>
           <br/>
           <br/>
-          <Table style={{color: 'white'}}>
+          <Table>
              <thead>
                <tr>
                  <th>#</th>
@@ -128,7 +124,7 @@ class Bills extends Component {
                  <th>Ticket Count</th>
                  <th>Amount ($)</th>
                  <th>Tax (%)</th>
-                 <th>Date</th>
+                 <th>Purchase Date</th>
                  <th>View Details</th>
                </tr>
             </thead>
@@ -142,14 +138,12 @@ class Bills extends Component {
                        <td>{billInfo.ticketCount}</td>
                        <td>{billInfo.amount}</td>
                        <td>{billInfo.tax}</td>
-                       <td><Moment date={billInfo.date} /></td>
+                       <td><Moment>{billInfo.date}</Moment></td>
                        <td>
                           <span>
                                 <Link
-                                    to={`/purchase-details/${billInfo.BillingId}`}
-                                    className="btn btn-link"
-                                    key={billInfo.BillingId}
-                                    style={{color: 'white'}}
+                                    to={`/purchase-details/${billInfo.billingId}`}
+                                    key={billInfo.billingId}
                                   >
                                 View
                               </Link>

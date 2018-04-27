@@ -69,8 +69,8 @@ router.get('/billSearch', function(req, res, next) {
 router.get('/getBill', function(req, res, next) {
   console.log(req.query);
   let sqlQuery = `Select b.billingId, u.userId, u.userType, u.firstName,
-                  u.lastName, m.title, m.photosUrl, m.seeItIn, mh.hallName,
-                  mh.city, mh.zipcode, b.amount, b.ticketCount,
+                  u.lastName, m.title, m.photosUrl, m.seeItIn, m.movieLengthInMin,
+                  mh.hallName, mh.city, mh.zipcode, b.amount, b.ticketCount,
                   (b.amount * b.ticketCount) as totalAmount, b.date from
                   Billing b inner join Users u on b.userId = u.userId
                   inner join MovieHall mh on mh.hallId = b.hallId

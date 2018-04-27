@@ -1,16 +1,23 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
-import {getBill} from "../../actions/adminActions";
+import {getBill, updatePageClick} from "../../actions/adminActions";
+import {BILLDETAILS} from '../../actions/pageClickEnums';
 import {connect} from "react-redux";
 import Moment from 'react-moment';
+import moment from 'moment';
 import './billDetails.css';
 
 import {
     Row,
     Col,
+    Container,
     Card,
     CardHeader,
     CardBody,
+    CardImg,
+    CardTitle,
+    CardSubtitle,
+    CardText,
     Table,
     Pagination,
     PaginationItem,
@@ -45,44 +52,98 @@ class BillsInfo extends Component {
     }
 
     componentDidMount() {
-        // console.log("props info: " + JSON.stringify(this.props));
-        this.props.getBill(this.state.billingId)
+        console.log("props info: " + JSON.stringify(this.props));
+        this.props.updatePageClick(BILLDETAILS);
+        this.props.getBill(this.state.billingId);
     }
 
     render() {
         return(
-            <div className="container-fluid" style={{color: 'white'}}>
-                <br/><br/><br/>
-                <div id="purchaseDetails" className="module-standard">
-                    <h2 className="header-secondary">Purchase Details</h2>
-                    <hr/>
-                    <div className="row">
-                        <div className="purchaseInfo">
-                            <div className="movieInfo">
-                                <h3 className="movieTitle">{this.props.admin.data.billDetails.title}</h3>
-                                <span className="movieRating">(NR)</span>
-                                <br/><br/><br/>
-                                <p className="showDate"><Moment date={this.props.admin.data.billDetails.date}/></p>
-                                <p className="showTime">Showtime: {showTimes[Math.floor(Math.random() * showTimes.length)]}</p>
-                                <p className="auditorium">Auditorium: {screen[Math.floor(Math.random() * screen.length)]}</p>
-                                <p className="username">Name: {this.props.admin.data.billDetails.firstName} {this.props.admin.data.billDetails.lastName}</p>
-                                <p className="numOfPeople">1 x Adult: ${this.props.admin.data.billDetails.totalAmount}</p>
-                            </div>
-                        </div>
-                        <hr/>
-                        <div className="theaterInfo">
-                            <h2 className="theaterName">{this.props.admin.data.billDetails.hallName}</h2>
-                            <div className="address">
-                                <p className="theaterMap">
-                                    {this.props.admin.data.billDetails.city}, CA
-                                    <br/>
-                                    {this.props.admin.data.billDetails.zipcode}
-                                </p>
-                            </div>
-                        </div>
+          <div className="container-fluid">
+            <div className="row">
+              <br/>
+              <h1><u>PURCHASE DETAILS</u></h1>
+              <br/><hr/>
+              <div className="col-md-6">
+                <Card>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <CardTitle className="cardtitle">{this.props.admin.data.billDetails.title}
+                        <CardSubtitle className="cardsubtitle">({this.props.admin.data.billDetails.seeItIn})</CardSubtitle>
+                      </CardTitle>
+                      <CardSubtitle className="cardsubtitle">Movie Length {this.props.admin.data.billDetails.movieLengthInMin} min</CardSubtitle>
+                      <img width="75%" src={this.props.admin.data.billDetails.photosUrl} alt="Card image cap" />
                     </div>
-                </div>
+                    <div className="col-md-6">
+                      <CardBody>
+                        <br/><br/><br/>
+                        <CardTitle className="cardtitle"><u>SHOW TIME</u></CardTitle>
+                        <CardText className="cardtext">{moment().format('MMMM Do YYYY')}</CardText>
+                        <CardText className="cardtext">{showTimes[Math.floor(Math.random() * showTimes.length)]}</CardText>
+                        <CardText className="cardtext">SCREEN: {screen[Math.floor(Math.random() * screen.length)]}</CardText>
+                        <CardText className="cardtext">PURCHASER: {this.props.admin.data.billDetails.firstName} {this.props.admin.data.billDetails.lastName}</CardText>
+                      </CardBody>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+              <div className="col-md-6">
+                <Card>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <CardBody>
+                        <br/><br/><br/>
+                        <CardTitle className="cardtitle"><u>HALL LOCATION</u></CardTitle>
+                        <CardText className="cardtext">{this.props.admin.data.billDetails.hallName}</CardText>
+                        <CardText className="cardtext">{this.props.admin.data.billDetails.city}, CA</CardText>
+                        <CardText className="cardtext">{this.props.admin.data.billDetails.zipcode}</CardText>
+                      </CardBody>
+                    </div>
+                    <div className="col-md-6">
+                      <br/><br/><br/>
+                      <CardTitle className="cardtitle"><u>TICKET SUMMARY</u></CardTitle>
+                      <Table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <CardText className="cardtext">{this.props.admin.data.billDetails.ticketCount} x People: </CardText>
+                            </td>
+                            <td>
+                              <CardText className="cardtext">${this.props.admin.data.billDetails.totalAmount}</CardText>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <CardText className="cardtext">Convenience Fee:</CardText>
+                            </td>
+                            <td>
+                              <CardText className="cardtext">$3.00</CardText>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <CardText className="cardtext">Fandango Code:</CardText>
+                            </td>
+                            <td>
+                              <CardText className="cardtext">NA</CardText>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <CardText className="cardtext">TOTAL:</CardText>
+                            </td>
+                            <td>
+                              <CardText className="cardtext">${this.props.admin.data.billDetails.totalAmount + 3.00}</CardText>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </Card>
+              </div>
             </div>
+          </div>
         );
     }
 }
@@ -91,4 +152,4 @@ function mapStateToProps({ admin }) {
     return { admin };
 }
 
-export default connect(mapStateToProps, { getBill })(withRouter(BillsInfo));
+export default connect(mapStateToProps, { getBill, updatePageClick })(withRouter(BillsInfo));

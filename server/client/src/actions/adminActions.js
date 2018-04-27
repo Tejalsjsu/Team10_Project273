@@ -72,10 +72,8 @@ export function deleteMvHall(values){
 }
 /*bills start*/
 export const latest10Bills = (userId) => async dispatch => {
-    console.log("krutika");
     const res = await axios.get('/adminSqlRoutes/latest10Bills',
         { params: {userId: userId}});
-    console.log("response data: " + JSON.stringify(res));
     dispatch({ type: BILLS, payload: res.data.result });
 };
 
@@ -163,11 +161,12 @@ export const getCityWiseRevenuePerYearForMovie = (movieId) => async dispatch => 
                 }
         });
     dispatch({ type: CITYWISE_REVENUE_PERYEAR_FOR_MOVIE, payload: res.data.result });
-    console.log("citiwise----------------",res.data.result)
 };
 export const getReviewsOnMovies = () => async dispatch => {
     const res = await axios.get('/adminSqlRoutes/reviewsOnMovies');
     dispatch({ type: REVIEWS_ON_MOVIES, payload: res.data.result });
 };
+
+
 /*
 * graph actions end*/
