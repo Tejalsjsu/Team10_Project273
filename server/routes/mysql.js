@@ -3,56 +3,91 @@ var router = express.Router();
 var mysql = require('mysql');
 const key = require('../config/keys');
 
-function getConnection() {
-  const connectionPool = mysql.createPool({
-    connectionLimit: 30,
-    host: key.MySqlHost,
-    user: key.MySqlUser,
-    password: key.MySqlPass,
-    port: key.MySqlPort,
-    database: key.MySqlDatabase
+// ******** Connection pool code start ********
+var pool = mysql.createPool({
+        connectionLimit : 50,
+        host     : key.MySqlHost,
+        user     : key.MySqlUser,
+        password : key.MySqlPass,
+        database : key.MySqlDatabase,
+        port	 : key.MySqlPort
+    });
+
+
+exports.fetchData = (callback, query) => {
+    console.log("MySQL SELECT QUERY: " + query);
+    pool.getConnection((err, connection) => {
+        connection.query(query, function(err, rows, fields) {
+            if(err) {
+                console.log("ERROR: " + err.message);
+            } else {
+              console.dir("Results: " + JSON.stringify(rows));
+            }
+            callback(err, rows);
+        });
+      connection.release();
+      console.log("Connection released");
   });
-  return connectionPool;
 }
 
-// function fetchData(callback, sqlQuery) {
-//   console.log('\nSQL Query::' + sqlQuery);
+exports.insertData = (callback, query) => {
+	  console.log("MySQL INSERT QUERY: " + query);
+  	pool.getConnection( (error, connection) => {
+    		connection.query(query, function(err, result) {
+      			if(err) {
+      				  console.log("ERROR: " + err.message);
+      			} else {
+        				console.log("Results: \n" + JSON.stringify(result));
+                console.log("The inserted id is: " + result.insertId);
+      			}
+            callback(err, result);
+    		});
+        connection.release();
+        console.log("Connection released");
+  	});
+}
+
+// ******** Connection pool code end ********
+
+// ******** Regular connection code start ********
+
+// var connection = mysql.createConnection({
+      // host     : key.MySqlHost,
+      // user     : key.MySqlUser,
+      // password : key.MySqlPass,
+      // database : key.MySqlDatabase,
+      // port	 : key.MySqlPort
+// });
 //
-//   var pool = getConnection();
-//
-//   pool.getConnection(function(err, connection) {
-//     if (err) {
-//       console.log('ERROR: ' + err.message);
-//       return;
-//     }
-//     connection.query(sqlQuery, function(error, results, fields) {
-//       if (error) {
-//         console.log('ERROR: ' + error.message);
-//       } else {
-//         console.log('DB results : ', JSON.stringify(results));
+// exports.fetchData = (callback, query) => {
+//     console.log("RUNNING MySQL SELECT QUERY THROUGH REGULAR CONNECTION: " + query);
+//     connection.query(query, function (err, result, fields) {
+//       if (err) {
+//         console.log("ERROR: " + err.message);
+//         throw err;
 //       }
-//       callback(err, results);
-//       connection.end();
-//       console.log('\nConnection closed..');
+//       console.log("Results: \n" + JSON.stringify(result));
+//       callback(err, result);
 //     });
-//   });
+//     console.log("End connection");
+//     connection.end();
+// }
+//
+// exports.insertData = (callback, query) => {
+// 	  console.log("RUNNING MySQL INSERT QUERY THROUGH REGULAR CONNECTION: " + query);
+//     connection.query(query, function (err, result) {
+//       if (err) {
+//         console.log("ERROR: " + err.message);
+//         throw err;
+//       }
+//       console.log("Results: \n" + JSON.stringify(result));
+//       console.log("The inserted id is: " + result.insertId);
+//       callback(err, result);
+//     });
+//     console.log("End connection");
+//     connection.end();
 // }
 
-exports.fetchData = (callback, sqlQuery) => {
-  console.log('\nSQL Query:: ' + sqlQuery);
-  var connection = getConnection();
+// ******** Regular connection code end ********
 
-  connection.query(sqlQuery, function(err, rows, fields) {
-    if (err) {
-      console.log('ERROR: ' + err.message);
-    } else {
-      // return err or result
-      console.log('DB Results:' + JSON.stringify(rows));
-    }
-    callback(err, rows);
-    connection.end();
-  });
-  console.log('\nConnection closed..');
-};
-
-//exports.fetchData = fetchData;
+console.log("Connected to mysql ... :) ");

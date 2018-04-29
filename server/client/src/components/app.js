@@ -64,7 +64,7 @@ class App extends Component {
               <Route exact path="/" component={Landing} />
               <Route exact path="/public/movies" component={MovieView} />
               <Route exact path="/addMovieHall" component={AddMovieHall} />
-              <Route exact path="/adminDasboard" component={AdminDashboard} />
+              <Route exact path="/adminDashboard" component={AdminDashboard} />
               <Route exact path="/sudMovieHall" component={SUDMovieHall} />
               <Route exact path="/User/Login" component={Login} />
               <Route exact path="/Signup" component={Signup} />
@@ -72,7 +72,7 @@ class App extends Component {
               <Route exact path="/hallAndMovieRevenue" component={HallAndMovieRevenues} />
               <Route
                 exact
-                path="/purchase-history"
+                path="/purchase-history/:userId"
                 component={AdminBillsView}
               />
               <Route

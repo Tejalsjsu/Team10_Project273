@@ -52,7 +52,8 @@ hr {
   font-weight: bold;
   font-style: italic;
   font-family: Georgia, serif;
-  color: black
+  color: black;
+  padding-top: 5px;
 }
 
 .cardtext {
@@ -61,4 +62,5 @@ hr {
   font-family: Georgia, serif;
   color: black;
   text-align: left;
+  padding-top: 5px;
 }
