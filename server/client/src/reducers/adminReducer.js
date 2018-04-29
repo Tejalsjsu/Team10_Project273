@@ -7,7 +7,8 @@ import {
     TOP10_HALLS_WITH_MAX_REVENUE,
     TOP10_MOVIE_REVENUES,
     CITYWISE_REVENUE_PERYEAR_FOR_MOVIE,
-    REVIEWS_ON_MOVIES
+    REVIEWS_ON_MOVIES,
+    USERS_TRACE
 } from '../actions/adminTypes';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
     citywise_revenue_peryear_for_movie: [],
     reviewsOnMovies: [],
     hallData: {},
+    usersTrace: [],
     message : ""
 }
 
@@ -113,6 +115,13 @@ export const data = (state = initialState, action) =>{
             state={
                 ...state,
                 reviewsOnMovies: action.payload
+            };
+            break;
+
+        case USERS_TRACE:
+            state={
+                ...state,
+                usersTrace: action.payload
             };
             break;
 

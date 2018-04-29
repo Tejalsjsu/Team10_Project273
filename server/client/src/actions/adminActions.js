@@ -7,7 +7,8 @@ import {
     TOP10_HALLS_WITH_MAX_REVENUE,
     TOP10_MOVIE_REVENUES,
     CITYWISE_REVENUE_PERYEAR_FOR_MOVIE,
-    REVIEWS_ON_MOVIES
+    REVIEWS_ON_MOVIES,
+    USERS_TRACE
 } from './adminTypes';
 
 export function addMovieHall(hallData){
@@ -110,6 +111,20 @@ export const getBill = (billingId) => async dispatch => {
 
 /*
 * graph actions start*/
+
+export const updateUserTrace = (userId, page) => async dispatch => {
+    const res = await axios.post('/graphs/updateUserTrace', {
+                                                             'userId': userId,
+                                                             'page': pageName
+                                                            }
+                                );
+};
+
+export const getUsersTrace = () => async dispatch => {
+    const res = await axios.get('/graphs/getUsersTrace');
+    dispatch({ type: USERS_TRACE, payload: res.data.result });
+};
+
 export const updatePageClick = (pageName) => async dispatch => {
     const res = await axios.post('/graphs/updatePageClick', {'page': pageName});
 };
