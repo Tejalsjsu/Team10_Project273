@@ -8,9 +8,11 @@ router.get('/latest10Bills', function(req, res, next) {
   let userQuery = `select userId, userType, firstName from fandango.Users
                    where userId = ${req.query.userId}`;
   let sqlQuery = `Select b.billingId, b.date, b.ticketCount, b.amount, b.tax,
-                  b.status, b.movieId, b.hallId, u.userId, u.userType, u.firstName, u.lastName
+                  b.status, b.movieId, b.hallId, u.userId, u.userType,
+                  u.firstName, u.lastName, m.photosUrl, m.title
                   from fandango.Billing b inner join fandango.Users u
-                  on b.userId = u.userId `;
+                  on b.userId = u.userId inner join fandango.Movies m
+                  on b.movieId = m.movieId `;
   let orderBy = ` order by date desc limit 10 `;
   let andClause = ` AND u.userId = `;
   mysql.fetchData(function(err, userResult) {
@@ -38,9 +40,10 @@ router.get('/billSearch', function(req, res, next) {
   let userQuery = `select userId, userType, firstName from fandango.Users
                    where userId = ${req.query.userId}`;
   let sqlQuery = `Select b.billingId, b.date, b.amount, b.tax, b.ticketCount,
-                  b.movieId, u.userId, u.userType, u.firstName, u.lastName from
-                  fandango.Billing b inner join fandango.Users u
-                  on b.userId = u.userId WHERE `;
+                  b.movieId, u.userId, u.userType, u.firstName, u.lastName,
+                  m.photosUrl, m.title from fandango.Billing b inner join
+                  fandango.Users u on b.userId = u.userId inner join
+                  fandango.Movies m on b.movieId = m.movieId WHERE `;
   if ("date" in req.query) {
     sqlQuery = sqlQuery + ` b.date like "${req.query.date.concat("%")}" `;
   } else if("month" in req.query) {
@@ -69,8 +72,8 @@ router.get('/billSearch', function(req, res, next) {
 router.get('/getBill', function(req, res, next) {
   console.log(req.query);
   let sqlQuery = `Select b.billingId, u.userId, u.userType, u.firstName,
-                  u.lastName, m.title, m.photosUrl, m.seeItIn, mh.hallName,
-                  mh.city, mh.zipcode, b.amount, b.ticketCount,
+                  u.lastName, m.title, m.photosUrl, m.seeItIn, m.movieLengthInMin,
+                  mh.hallName, mh.city, mh.zipcode, b.amount, b.ticketCount,
                   (b.amount * b.ticketCount) as totalAmount, b.date from
                   Billing b inner join Users u on b.userId = u.userId
                   inner join MovieHall mh on mh.hallId = b.hallId
@@ -79,36 +82,6 @@ router.get('/getBill', function(req, res, next) {
   mysql.fetchData(function(err, results) {
     if(err) {
       res.status(400).json({error: "Unable to fetch the bill details"});
-    } else {
-      res.status(200).json({result: results[0]});
-    }
-  }, sqlQuery);
-});
-
-// Revenue by Movie
-router.get('/getRevenueByMovie', function(req, res, next) {
-  console.log(req.query);
-  let sqlQuery = `Select m.title, sum(b.amount * b.ticketCount) as totalRevenue
-                  from Billing b inner join Movies m on m.movieId = b.movieId
-                  where b.movieId=${req.query.movieId} and b.status="booked" group by m.title`;
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to get revenue by movie"});
-    } else {
-      res.status(200).json({result: results[0]});
-    }
-  }, sqlQuery);
-});
-
-// Revenue by Hall
-router.get('/getRevenueByHall', function(req, res, next) {
-  console.log(req.query);
-  let sqlQuery = `Select mh.hallName, sum(b.amount * b.ticketCount) as totalRevenue
-                  from Billing b inner join MovieHall mh on mh.hallId = b.hallId
-                  where mh.hallId=${req.query.hallId} and b.status="booked" group by mh.hallName`;
-  mysql.fetchData(function(err, results) {
-    if(err) {
-      res.status(400).json({error: "Unable to get revenue by movie"});
     } else {
       res.status(200).json({result: results[0]});
     }

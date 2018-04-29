@@ -31,6 +31,34 @@ h3 {
     line-height: 25px;
 }
 h1, h2, h3, h4 {
-    font-family: "alternate-gothic-no-1-d", "Futura Condensed", "Arial Narrow", Arial, sans-serif;
+    font-family: cursive;
     text-transform: uppercase;
+    color: black
+}
+
+hr {
+  color: black
+}
+.cardtitle {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: cursive;
+  text-transform: uppercase;
+  color: black
+}
+
+.cardsubtitle {
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+  font-family: Georgia, serif;
+  color: black
+}
+
+.cardtext {
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Georgia, serif;
+  color: black;
+  text-align: left;
 }

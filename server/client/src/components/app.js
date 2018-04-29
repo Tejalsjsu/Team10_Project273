@@ -13,8 +13,8 @@ import Login from './User/Login';
 import Signup from './User/Signup';
 import EditProfile from './User/EditProfile';
 import '../app.css';
-import AdminBillsView from './admin/bills';
-import AdminBillInfoView from './admin/displayBill';
+import AdminBillsView from './admin/Bills';
+import AdminBillInfoView from './admin/DisplayBill';
 import MovieDetails from './MovieDetails';
 
 import AddMovie from './AddMovie';
@@ -24,6 +24,8 @@ import MovieDetail from './Movie/MovieDetail';
 import MovieLocation from './Movie/MovieLocations';
 import MovieCheckout from './Movie/MovieCheckout';
 import AddMovieToHall from './AddMovieTOHall';
+import HallAndMovieRevenues from './admin/HallAndMovieRevenues';
+
 
 let logo = require('../images/logo-1.png');
 
@@ -67,6 +69,7 @@ class App extends Component {
               <Route exact path="/User/Login" component={Login} />
               <Route exact path="/Signup" component={Signup} />
               <Route exact path="/User/EditProfile" component={EditProfile} />
+              <Route exact path="/hallAndMovieRevenue" component={HallAndMovieRevenues} />
               <Route
                 exact
                 path="/purchase-history"
