@@ -16,9 +16,9 @@ if (cluster.isMaster) {
   const passport = require('passport');
   const key = require('./config/keys');
 
-  require('./models/User');
-  require('./models/Movie');
-  require('./services/passport');
+  // require('./models/User');
+  // require('./models/Movie');
+  // require('./services/passport');
 
   const options = {
     autoIndex: false, // Don't build indexes
@@ -42,10 +42,10 @@ if (cluster.isMaster) {
 
   app.use(passport.initialize());
   app.use(passport.session());
-  require('./routes/authRoutes')(app);
-  require('./routes/adminRoutes')(app);
+  // require('./routes/authRoutes')(app);
+  // require('./routes/adminRoutes')(app);
+  // require('./routes/publicRoutes')(app);
   require('./routes/uploadRoutes')(app);
-  require('./routes/publicRoutes')(app);
   require('./routes/billingRoutes')(app);
   require('./routes/movieRoutes')(app);
 

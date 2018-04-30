@@ -112,7 +112,7 @@ export const getBill = (billingId) => async dispatch => {
 /*
 * graph actions start*/
 
-export const updateUserTrace = (userId, page) => async dispatch => {
+export const updateUserTrace = (userId, pageName) => async dispatch => {
     const res = await axios.post('/graphs/updateUserTrace', {
                                                              'userId': userId,
                                                              'page': pageName

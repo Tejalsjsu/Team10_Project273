@@ -2,30 +2,31 @@ import React, { Component } from 'react';
 import { NavLink, BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+
 import Header from './Header';
 import Landing from './Landing';
 import MovieView from './MovieHall/MovieView';
-import AddMovieHall from './admin/AddMovieHall';
-import SUDMovieHall from './admin/SearchUpdateDeleteMovieHall';
-import AdminDashboard from '../components/admin/AdminDashboard';
-import '../adminDashboard.css';
 import Login from './User/Login';
 import Signup from './User/Signup';
 import EditProfile from './User/EditProfile';
-import '../app.css';
-import AdminBillsView from './admin/Bills';
-import AdminBillInfoView from './admin/DisplayBill';
-import MovieDetails from './MovieDetails';
-
 import AddMovie from './AddMovie';
 import Revenue from './Revenue';
 import Footer from './Footer';
+import MovieDetails from './MovieDetails';
 import MovieDetail from './Movie/MovieDetail';
 import MovieLocation from './Movie/MovieLocations';
 import MovieCheckout from './Movie/MovieCheckout';
 import AddMovieToHall from './AddMovieTOHall';
 import HallAndMovieRevenues from './admin/HallAndMovieRevenues';
 
+import AddMovieHall from './admin/AddMovieHall';
+import SUDMovieHall from './admin/SearchUpdateDeleteMovieHall';
+import AdminDashboard from './admin/AdminDashboard';
+import AdminBillsView from './admin/Bills';
+import AdminBillInfoView from './admin/DisplayBill';
+
+import '../app.css';
+import '../adminDashboard.css';
 
 let logo = require('../images/logo-1.png');
 
@@ -65,6 +66,7 @@ class App extends Component {
               <Route exact path="/public/movies" component={MovieView} />
               <Route exact path="/addMovieHall" component={AddMovieHall} />
               <Route exact path="/adminDashboard" component={AdminDashboard} />
+              <Route exact path="/AdminDashboard" component={AdminDashboard} />
               <Route exact path="/sudMovieHall" component={SUDMovieHall} />
               <Route exact path="/User/Login" component={Login} />
               <Route exact path="/Signup" component={Signup} />

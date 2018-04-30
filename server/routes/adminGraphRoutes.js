@@ -3,6 +3,8 @@ var router = express.Router();
 var pageClickModel = require('../models/PageClicks');
 var movieClickModel = require('../models/MovieClicks');
 var userTraceModel = require('../models/TraceDiagram');
+var d3_gen = require('./D3_Data_Generation');
+
 
 router.get('/getPageClicks', function(req, res, next) {
   try {
@@ -52,7 +54,7 @@ router.get('/getMovieClicks', function(req, res, next) {
 
 router.get('/getUsersTrace', function(req, res, next) {
   try {
-    userTraceModel.findOne({},
+    userTraceModel.find({},
           {_id: 0},
           function (err, results) {
               if (err) {
@@ -61,6 +63,7 @@ router.get('/getUsersTrace', function(req, res, next) {
               }
               console.log("Data: " + JSON.stringify(results));
               if (results !== null) {
+                  d3_gen.generate_d3_tree_data(results[0])
                   res.status(200).json({message: `user trace data`, result: results});
               }
               else {
