@@ -3,7 +3,9 @@ import {Link, withRouter, Route} from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 import cookie from 'react-cookies';
 import {connect} from "react-redux";
+import {userDetails} from "../../reducers/userReducer";
 import {verifyLogin} from "../../actions/userActions";
+import {bindActionCreators} from "redux";
 let logo = require('../../images/login-logo.png');
 let google = require('../../images/google.png');
 
@@ -24,7 +26,7 @@ class Login extends Component{
         };
     }
 
-    verifyLogin(){
+    handleLogin(){
       let errors = [];
       let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
       if(this.state.userdata.email.length === 0){
@@ -36,14 +38,29 @@ class Login extends Component{
              errors.push("Kindly enter a password");
        }
 
+
         if(errors.length === 0) {
           //Check in database
-          console.log("In no errors");
-          this.props.verifyLogin(this.state.userdata)
-          .then((data)=>{
-            this.setState({
-              message: data.message
-            })
+          this.props.verifyLogin(this.state.userdata).then(
+              (response) => {
+               //   let strResponse = JSON.stringify(response);
+                  //console.log("In success login out " +strResponse);
+              if(response.data.status === '201'){
+                  console.log(response.data.userId);
+                  this.setState({
+                      message: response.data.message
+
+                  });
+
+                  cookie.save('userId', response.data.userId, { path: '/' });
+                  if(response.data.isAdmin == 1){
+                    cookie.save('isAdmin', 'true', { path: '/' });}
+                  else{
+                      cookie.save('isAdmin', 'false', { path: '/' });
+                  }
+                  console.log("isAdmin " +cookie.load('isAdmin'));
+                  this.props.history.push("/User/EditProfile");
+              }
           },
          (err) => {
            console.log(err);
@@ -58,10 +75,18 @@ class Login extends Component{
         }
 
     }
-
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
+        if(nextProps.userDetails){
+            this.setState({
+                message : nextProps.userDetails
+            });
+        }
+    }
 
     render(){
         return(
+
             <div className="errors">
             <div className="errors container">
                 {/*<div className="col-md-3">*/}
@@ -114,7 +139,7 @@ class Login extends Component{
                                        });
                                    }}/><br/>
                                    <div className="p-buttom p-top">
-                            <Button bsStyle="success" bsSize="sm" block onClick={()=>this.verifyLogin()}> Login </Button>
+                            <Button bsStyle="success" bsSize="sm" block onClick={()=>this.handleLogin()}> Login </Button>
                             </div>
                             <hr/>
                             <div className="p-buttom">
@@ -137,7 +162,7 @@ class Login extends Component{
         }
 
 function mapStateToProps({ user }) {
-  return { user };
+    return { user };
 }
 
-export default connect(mapStateToProps, { verifyLogin })(withRouter(Login));
+export default connect(mapStateToProps, {verifyLogin})(withRouter(Login));

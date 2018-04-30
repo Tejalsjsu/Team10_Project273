@@ -3,7 +3,8 @@ import {Link, withRouter, Route} from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 import cookie from 'react-cookies';
 import {connect} from "react-redux";
-import {verifyLogin} from "../../actions/userActions";
+import {signup} from "../../actions/userActions";
+
 let logo = require('../../images/login-logo.png');
 let google = require('../../images/google.png');
 
@@ -15,9 +16,7 @@ class Signup extends Component{
             userdata: {
                 firstName:'',
                 password: '',
-                email: '',
-                token:'',
-                userId:''
+                email: ''
             },
             isLoggedIn: false,
             validation_error: [],
@@ -43,16 +42,16 @@ class Signup extends Component{
         if(errors.length === 0) {
           //Check in database
           console.log("In no errors");
-          this.props.verifyLogin(this.state.userdata)
+          this.props.signup(this.state.userdata)
           .then((data)=>{
             this.setState({
-              message: data.message
+              message: "Success"
             })
           },
          (err) => {
            console.log(err);
            this.setState({
-             message: "Could not Login. Please try again"
+             message: "Could not signup. Please try again"
            })
          });
         }else{
@@ -150,4 +149,4 @@ function mapStateToProps({ user }) {
   return { user };
 }
 
-export default connect(mapStateToProps, { verifyLogin })(withRouter(Signup));
+export default connect(mapStateToProps, { signup })(withRouter(Signup));

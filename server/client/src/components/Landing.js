@@ -1,14 +1,106 @@
 import React from 'react';
+import * as moviesDetails from "../actions/moviesActions";
+import {moviesData} from "../reducers/moviesReducer";
+import {Link} from "react-router-dom";
+import {bindActionCreators} from 'redux';
+import '../app.css';
+import {connect} from "react-redux";
+import {Redirect,withRouter} from 'react-router-dom';
 
 class Landing extends React.Component {
+    state={
+        moviesList:[],
+        moviesListBck:[],
+        hallsList:[],
+        hallsListBck:[],
+        //genreList:[],
+        priceList:[]
+    };
+
+    componentWillReceiveProps(nextProps){
+        //console.log(nextProps);
+        if(nextProps.moviesData){
+            if(nextProps.moviesData.data){
+                this.setState ({
+                    moviesList : nextProps.moviesData.data.moviesList,
+                    hallsList : nextProps.moviesData.data.hallsList,
+                    //genreList : nextProps.moviesData.data.genreList,
+                    moviesListBck : nextProps.moviesData.data.moviesList,
+                    hallsListBck : nextProps.moviesData.data.hallsList
+                });
+
+               // console.log(JSON.stringify(nextProps.moviesData.data));
+                let price_list = [], price;
+                for(let i=0;i<nextProps.moviesData.data.hallsList.length;i++){
+                    price = nextProps.moviesData.data.hallsList[i].ticket_price;
+                    if(price_list.indexOf(price)== -1) {
+                        price_list.push(price);
+                    }
+                }
+                this.setState({
+                    priceList : price_list
+                });
+            }
+        }
+    }
+
+    componentWillMount(){
+        this.props.getMovies();
+        this.props.getHalls();
+        //this.props.getGenreList();
+    }
+
+    searchData(value){
+        this.setState({
+            moviesList : this.state.moviesListBck
+        })
+        var searchStr = value;
+        if(searchStr == ""){
+            this.setState({
+                moviesList : this.state.moviesListBck,
+                hallsList : this.state.hallsListBck
+            })
+        }else {
+            this.setState({
+                moviesList : this.state.moviesListBck.filter(function (movie) {
+                    return (movie.title.toUpperCase().includes(searchStr.toUpperCase()));
+                }),
+                hallsList : this.state.hallsListBck.filter(function (hall) {
+                    return (hall.name.includes(searchStr));
+                })
+            });
+        }
+    }
+
+    onChange(e){
+        this.setState({
+            [e.target.name]:e.target.value
+        });
+        this.searchData(e.target.value);
+    }
+
+    onHandleChangeRating(rating){
+        this.setState({
+            moviesList : this.state.moviesListBck.filter(function (movie) {
+                return (movie.rating == rating);
+            })
+        });
+    }
+
+    onHandleChangePrice(price){
+        this.setState({
+            hallsList : this.state.hallsListBck.filter(function (hall) {
+                return (hall.ticket_price == price);
+            })
+        });
+    }
+
   renderAdvertisement() {
     const styles = {
       height: '170px'
-    }
+    };
 
     return (
-
-
       <div className="container">
         <h1 className="my-4 text-center text-lg-left">Offers</h1>
 
@@ -61,23 +153,35 @@ class Landing extends React.Component {
       </div>
     );
   }
+
+    movieDetails(movie_id){
+        this.props.history.push("/movie-details/"+movie_id);
+    }
+
   renderMoviesNowPlaying() {
     return (
-      <div className="container">
-        <h1 className="my-4 text-center text-lg-left">Movies Now Playing</h1>
+        <div className="container">
+            <h1 className="my-4 text-center text-lg-left">Movies Now Playing</h1>
 
-        <div className="row text-center text-lg-left">
-          <div className="col-lg-3 col-md-4 col-xs-6">
-            <a href="#" className="d-block mb-4 h-100">
-              <img
-                className="img-fluid img-thumbnail"
-                src="http://placehold.it/400x300"
-                alt="Image"
-              />
-            </a>
-          </div>
+
+            <div className="row text-center text-lg-left">
+                {this.state.moviesList.map((movie,i) =>
+                    <h5 key={i}>
+                        <div>
+                            <div className="col-lg-3 col-md-4 col-xs-6">
+                                <Link href="#" className="d-block mb-4 h-100"  to={'/movie-details/'+movie.movie_id}>
+                                    <img
+                                        className="img-fluid img-thumbnail"
+                                        src={movie.photo}
+                                        alt={movie.title}
+                                    />
+                                    <label>{movie.title}</label>
+                                </Link>
+                            </div>
+                        </div>
+                    </h5>)}
+            </div>
         </div>
-      </div>
     );
   }
   render() {
@@ -86,8 +190,6 @@ class Landing extends React.Component {
       height: '500px'
     };
     return (
-        <div className="row">
-
       <div className="container-fluid">
         <div id="myCarousel" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
@@ -142,15 +244,50 @@ class Landing extends React.Component {
             <span className="glyphicon glyphicon-chevron-right" />
             <span className="sr-only">Next</span>
           </a>
+            <input type="text"
+                   name="search"
+                   onChange={this.onChange.bind(this)}
+                   placeholder="Search"
+                   className="searchBox col-md-4"/><button type="submit" className="p510" onClick={() => this.searchData(this.state.search)}><i className="fa fa-search"></i></button>
+
         </div>
+          <div>
+              <label className="select-view mr50">Select Rating:</label>
+              <label className="radio-label">
+                  <input type="Radio" name="rating" onClick={() => this.onHandleChangeRating("1")}></input>1 Star
+              </label>
+              <label className="radio-label">
+                  <input type="Radio" name="rating" onClick={() => this.onHandleChangeRating("2")}></input>2 Stars
+              </label>
+              <label className="radio-label">
+                  <input type="Radio" name="rating" onClick={() => this.onHandleChangeRating("3")}></input>3 Stars
+              </label>
+              <label className="radio-label">
+                  <input type="Radio" name="rating" onClick={() => this.onHandleChangeRating("4")}></input>4 Stars
+              </label>
+              <label className="radio-label">
+                  <input type="Radio" name="rating" onClick={() => this.onHandleChangeRating("5")}></input>5 Stars
+              </label>
+          </div>
+
 
         {this.renderMoviesNowPlaying()}
         {this.renderMoviesComingSoon()}
         {this.renderAdvertisement()}
         <br />
       </div>
-      </div>
     );
   }
 }
-export default Landing;
+
+function mapStateToProps(state){
+    return{
+        moviesData : state.movies
+    };
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators(Object.assign({}, moviesDetails),dispatch)
+
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Landing);

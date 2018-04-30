@@ -28,7 +28,7 @@ body {
 
 .right {
     bottom: 0;
-    color: ##fff;
+    color: #fff;
     font-size: 14px;
     position: absolute;
     right: 10px;
@@ -68,7 +68,9 @@ top: 0;
 width: 100%;
 }
 
-
+.black-bk{
+    background-color: #4C4C4C;
+}
 .global-header {
     position: relative;
     right: 0;
@@ -201,7 +203,7 @@ width: 100%;
 }
 
 .login-img{
-  width: 350px;
+  width: 290px;
   height: 70px;
   padding-bottom: 10px;
 }
@@ -254,4 +256,51 @@ width: 100%;
 
 a:hover {
     color: white;
+}
+.header-border{
+    border-bottom: 3px solid #F15500;
+}
+h1{
+    color:white;
+    font-weight:700;
+}
+
+.hgt{
+    display: block;
+}
+
+.panel-group-head-profile {
+    color: #4c4c4c;
+    font-family: "alternate-gothic-no-1-d","Futura Condensed","Arial Narrow",Arial,sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.panel-group-profile {
+    margin-bottom: 15px;
+    color: #4C4C4C;
+}
+
+.panel-profile {
+    background: #fff;
+    border: #ccc 1px solid;
+    overflow: auto;
+    padding: 23px 23px 0 23px;
+    margin: 0;
+    width: 100%;
+}
+
+.input-lg-profile{
+    width: 70%;
+}
+
+.font-large{
+    font-size: large;
+    color: black;
+}
+
+.font-grey{
+    color: #919292;
+    font-size: 17px;
 }
