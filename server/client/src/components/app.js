@@ -65,7 +65,6 @@ class App extends Component {
               <Route exact path="/" component={Landing} />
               <Route exact path="/public/movies" component={MovieView} />
               <Route exact path="/addMovieHall" component={AddMovieHall} />
-              <Route exact path="/adminDashboard" component={AdminDashboard} />
               <Route exact path="/AdminDashboard" component={AdminDashboard} />
               <Route exact path="/sudMovieHall" component={SUDMovieHall} />
               <Route exact path="/User/Login" component={Login} />

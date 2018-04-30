@@ -48,6 +48,7 @@
     "react-bootstrap-table-next": "^0.1.8",
     "react-chartjs-2": "^2.7.0",
     "react-cookies": "^0.1.0",
+    "react-d3-tree": "^1.10.4",
     "react-datepicker": "^1.4.1",
     "react-dom": "^16.2.0",
     "react-donut-chart": "^1.1.6",

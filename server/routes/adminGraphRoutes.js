@@ -63,8 +63,10 @@ router.get('/getUsersTrace', function(req, res, next) {
               }
               console.log("Data: " + JSON.stringify(results));
               if (results !== null) {
-                  d3_gen.generate_d3_tree_data(results[0])
-                  res.status(200).json({message: `user trace data`, result: results});
+                  let usersTrace = [];
+                  var tree_obj = d3_gen.generate_d3_tree_data(results[0])
+                  usersTrace.push(tree_obj);
+                  res.status(200).json({message: `user trace data`, result: usersTrace});
               }
               else {
                 res.status(401).json({error: `failed to get user trace data`});

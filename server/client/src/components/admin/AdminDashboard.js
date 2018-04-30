@@ -6,6 +6,147 @@ import {Redirect} from 'react-router-dom';
 import * as getData from '../../actions/adminActions';
 import {adminData} from "../../reducers/adminReducer";
 import {AreaChart, Area, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Legend} from 'recharts';
+import Tree from "react-d3-tree";
+import {
+    Row,
+    Col,
+    Container,
+    Card,
+    CardHeader,
+    CardBody,
+    CardImg,
+    CardTitle,
+    CardSubtitle,
+    CardText,
+    Table,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Form,
+    FormGroup,
+    FormText,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupButton,
+    Dropdown
+} from 'reactstrap';
+
+const containerStyles = {
+  width: '100%',
+  height: '100vh',
+};
+
+const myTreeData = [{
+	"name": "Home",
+	"attributes": {
+		"name": "Home",
+		"Time": "15 seconds"
+	},
+	"children": [{
+			"name": "MovieDetails",
+			"attributes": {
+				"name": "MovieDetails",
+				"Time": "12 seconds"
+			}
+		},
+		{
+			"name": "Bills",
+			"attributes": {
+				"name": "Bills",
+				"Time": "45 seconds"
+			},
+			"children": [{
+				"name": "BillDetails",
+				"attributes": {
+					"name": "BillDetails",
+					"Time": "20 seconds"
+				}
+			}]
+		},
+    {
+  			"name": "MovieDetails",
+  			"attributes": {
+  				"name": "MovieDetails",
+  				"Time": "110 seconds"
+  			},
+        "children": [{
+  				"name": "BillDetails",
+  				"attributes": {
+  					"name": "BillDetails",
+  					"Time": "50 seconds"
+  				}
+  			}]
+  	},
+		{
+			"name": "Login",
+			"attributes": {
+				"name": "Login",
+				"Time": "30 seconds"
+			}
+		}
+	]
+}];
+const treeData =  [
+        {
+            "name": "Home",
+            "attributes": {
+                "name": "Home",
+                "Time": "15 seconds"
+            },
+            "children": [
+                {
+                    "name": "MovieDetails",
+                    "attributes": {
+                        "name": "MovieDetails",
+                        "Time": "12 seconds"
+                    },
+                    "children": [
+                        {
+                            "name": "Home",
+                            "attributes": {
+                                "name": "Home",
+                                "Time": "25 seconds"
+                            },
+                            "children": [
+                                {
+                                    "name": "Bills",
+                                    "attributes": {
+                                        "name": "Bills",
+                                        "Time": "45 seconds"
+                                    },
+                                    "children": [
+                                        {
+                                            "name": "BillDetails",
+                                            "attributes": {
+                                                "name": "BillDetails",
+                                                "Time": "10 seconds"
+                                            },
+                                            "children": [
+                                                {
+                                                    "name": "Home",
+                                                    "attributes": {
+                                                        "name": "Home",
+                                                        "Time": "67 seconds"
+                                                    },
+                                                    "children": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
 
 class Admin extends React.Component {
     constructor(props){
@@ -15,7 +156,8 @@ class Admin extends React.Component {
             uMessage: ""
         };
     };
-    componentWillMount(){
+
+    componentWillMount() {
         this.props.getTop10MovieRevenues().then(
             (data) => {
                 console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
@@ -25,7 +167,8 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
         this.props.getCityWiseRevenuePerYearForMovie(1).then(
             (data) => {
@@ -36,7 +179,8 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
         this.props.getTop10HallsWithMaxRevenue().then(
             (data) => {
@@ -47,7 +191,8 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
         this.props.getPageClicks().then(
             (data) => {
@@ -77,7 +222,8 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
         this.props.getMovieClicks().then(
             (data) => {
@@ -89,7 +235,8 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
         this.props.getReviewsOnMovies(this.state).then(
             (data) => {
@@ -109,40 +256,19 @@ class Admin extends React.Component {
             },
             (err) => {
                 console.log("inside err");
-            });
+            }
+        );
 
-        /*this.props.getTop10MovieRevenues(this.state).then(
-            (data) => {
-                console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
-                this.setState({
-                    top10_movie_revenues: this.props.adminData.data.top10_movie_revenues
-                });
-                console.log("this.props.adminData.data.top10_movie_revenues",this.state.top10_movie_revenues);
-            },
-            (err) => {
-                console.log("inside err");
-            });
 
-        this.props.getTop10MovieRevenues(this.state).then(
-            (data) => {
-                console.log("after getTop10MovieRevenues",this.props.adminData.data.top10_movie_revenues);
-                this.setState({
-                    top10_movie_revenues: this.props.adminData.data.top10_movie_revenues
-                });
-                console.log("this.props.adminData.data.top10_movie_revenues",this.state.top10_movie_revenues);
-            },
-            (err) => {
-                console.log("inside err");
-            });*/
+        this.props.getUsersTrace();
+        // this.setState({
+        //   userTrace: this.props.adminData.data.usersTrace
+        // });
+        console.log("redux trace: " + JSON.stringify(this.props.adminData));
     }
 
-    render(){
-        const data = [
-            {text: 'Man', value: 300},
-            {text: 'Woman', value: 100},
-            {text: 'ChildMan', value: 50},
-            {text: 'ChildWoman', value: 75}
-        ];
+    render() {
+
         const margin = {top: 20, right: 20, bottom: 30, left: 40};
 
         const data01 = [{name: 'Group A', value: 400}, {name: 'Group B', value: 300},
@@ -194,10 +320,11 @@ class Admin extends React.Component {
             {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
         ];
 
-        console.log("state : ",this.state);
+        console.log("state : " + JSON.stringify(this.state));
+        console.log("user trace : " + JSON.stringify(this.props.adminData.data.usersTrace));
         return(
             <div>
-                <div className="page-header-container">
+                {/*<div className="page-header-container">
                     <div className="row">
                         <nav className="page-navigation">
                             <ul className="page-navigation-list">
@@ -214,8 +341,8 @@ class Admin extends React.Component {
                             </ul>
                         </nav>
                     </div>
-                </div>
-
+                </div>*/}
+                <br/>
                 <div className="row">
 
                     {/*Retrieve data from database and show first 10 movies with its revenue/year*/}
@@ -262,7 +389,9 @@ class Admin extends React.Component {
                     </div>
                 </div>
                 <hr/>
+
                 <div className="row">
+
                     <div className="col-sm-3">
                         <div className="row">
                             Reviews for Movies
@@ -315,6 +444,15 @@ class Admin extends React.Component {
                             <Area type='monotone' dataKey='clicks' stackId="1" stroke='#F4A460' fill='#F4A460' />
                         </AreaChart>
                     </div>
+                </div>
+                <br/><hr/><br/><br/>
+                <div className="row">
+                  <div className="col-sm-3">
+                      <h2>User Trace Tree</h2>
+                    <div id="treeWrapper" style={{width: '100em', height: '50em'}}>
+                        <Tree data={myTreeData} />
+                    </div>
+                  </div>
                 </div>
             </div>
         );
